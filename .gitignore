@@ -1,52 +1,76 @@
-# Prerequisites
-*.d
+# ---------------------------------------------------
+# Unity generated / build folders
+# ---------------------------------------------------
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Asset Store tools plugin
+[Aa]ssets/AssetStoreTools*
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Auto-generated Jetbrains Rider plugin
+[Aa]ssets/Plugins/Editor/JetBrains*
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
 *.pdb
+*.mdb
+*.opendb
+*.VC.db
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Unity3D generated meta files for ignored folders
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Unity3D generated file on crash reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+*.exe
+*.x86
+*.x86_64
+
+# Crashlytics generated file
+crashlytics-build.properties
+
+# Packed Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# OS junk
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Git LFS note: large binary art assets (fbx, psd, wav, png) are better
+# tracked with Git LFS than ignored — see .gitattributes
