@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     public float walkSpeed = 5f;
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.2f;
     public LayerMask groundMask;
 
+    public Animator animator;
     private CharacterController controller;
     private Vector3 velocity;
 
@@ -201,7 +203,15 @@ public class PlayerMovement : MonoBehaviour
                 Time.deltaTime
             );
         }
-
+        
+        if (!isGrounded && velocity.y < 0)
+        {
+             animator.SetBool("Falling", true);
+        }
+        else
+        {
+            animator.SetBool("Falling", false);
+        }
         // -------------------------
         // LEDGE DETECTION
         // -------------------------
