@@ -5,6 +5,7 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
+    public Transform attackPoint;
     public Animator animator;
     public NavMeshAgent agent;
 
@@ -12,23 +13,22 @@ public class EnemyAI : MonoBehaviour
     public float detectionRange = 15f;
 
     [Header("Attack")]
-    public float attackRange = 2.2f;
+    public float attackRange = 2.5f;
     public float attackCooldown = 1.5f;
 
-    [Header("Rotation")]
-    public float rotationSpeed = 8f;
+    [Header("Attack Damage")]
+    public float attackDamage = 20f;
+    public float damageRadius = 1.5f;
+    public LayerMask playerLayer;
 
     private float nextAttackTime;
+
+    private PlayerHealth playerHealth;
 
 
     void Start()
     {
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
-
+        // Find player automatically
         if (player == null)
         {
             GameObject playerObject =
@@ -38,9 +38,46 @@ public class EnemyAI : MonoBehaviour
                 player = playerObject.transform;
         }
 
+        // Get PlayerHealth
+        if (player != null)
+        {
+            playerHealth =
+                player.GetComponent<PlayerHealth>();
+
+            if (playerHealth == null)
+            {
+                playerHealth =
+                    player.GetComponentInParent<PlayerHealth>();
+            }
+        }
+
+        // Find Animator
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        // Find NavMeshAgent
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
+
+        // Error checks
+        if (player == null)
+            Debug.LogError("ENEMY: Player is not assigned!");
+
+        if (playerHealth == null)
+            Debug.LogError("ENEMY: PlayerHealth could not be found!");
+
+        if (animator == null)
+            Debug.LogError("ENEMY: Animator is not assigned!");
+
+        if (agent == null)
+            Debug.LogError("ENEMY: NavMeshAgent is not assigned!");
+
+        if (attackPoint == null)
+            Debug.LogError("ENEMY: Attack Point is not assigned!");
+
         if (agent != null)
         {
-            agent.updateRotation = false;
+            agent.updateRotation = true;
         }
     }
 
@@ -48,55 +85,94 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         if (player == null ||
-            agent == null ||
-            animator == null)
+            animator == null ||
+            agent == null)
         {
             return;
         }
 
-        Vector3 direction =
-            player.position - transform.position;
+        // =========================================
+        // PLAYER IS DEAD
+        // =========================================
 
-        direction.y = 0f;
+        if (playerHealth != null &&
+            playerHealth.IsDead)
+        {
+            StopMoving();
 
-        float distance =
-            direction.magnitude;
+            // Remove any queued attack trigger.
+            animator.ResetTrigger("Attack");
+
+            return;
+        }
 
 
-        // -------------------------
-        // IDLE
-        // -------------------------
+        // =========================================
+        // DETECTION
+        // =========================================
 
-        if (distance > detectionRange)
+        Vector3 enemyPosition =
+            transform.position;
+
+        Vector3 playerPosition =
+            player.position;
+
+        enemyPosition.y = 0f;
+        playerPosition.y = 0f;
+
+        float detectionDistance =
+            Vector3.Distance(
+                enemyPosition,
+                playerPosition
+            );
+
+
+        // =========================================
+        // PLAYER NOT DETECTED
+        // =========================================
+
+        if (detectionDistance > detectionRange)
         {
             StopMoving();
             return;
         }
 
 
-        // -------------------------
-        // ATTACK
-        // -------------------------
+        // =========================================
+        // ATTACK RANGE
+        // =========================================
 
-        if (distance <= attackRange)
+        if (attackPoint != null)
         {
-            StopMoving();
+            Vector3 attackPosition =
+                attackPoint.position;
 
-            FacePlayer(direction);
+            Vector3 targetPosition =
+                player.position;
 
-            TryAttack();
+            attackPosition.y = 0f;
+            targetPosition.y = 0f;
 
-            return;
+            float attackDistance =
+                Vector3.Distance(
+                    attackPosition,
+                    targetPosition
+                );
+
+            if (attackDistance <= attackRange)
+            {
+                StopMoving();
+                TryAttack();
+                return;
+            }
         }
 
 
-        // -------------------------
+        // =========================================
         // CHASE
-        // -------------------------
+        // =========================================
 
         ChasePlayer();
-
-        FacePlayer(direction);
     }
 
 
@@ -125,7 +201,6 @@ public class EnemyAI : MonoBehaviour
         if (agent.isOnNavMesh)
         {
             agent.isStopped = true;
-            agent.ResetPath();
         }
 
         animator.SetFloat(
@@ -137,25 +212,15 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-    void FacePlayer(Vector3 direction)
-    {
-        if (direction.sqrMagnitude < 0.01f)
-            return;
-
-        Quaternion targetRotation =
-            Quaternion.LookRotation(direction);
-
-        transform.rotation =
-            Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
-    }
-
-
     void TryAttack()
     {
+        // Don't attack dead player
+        if (playerHealth != null &&
+            playerHealth.IsDead)
+        {
+            return;
+        }
+
         if (Time.time < nextAttackTime)
             return;
 
@@ -166,16 +231,63 @@ public class EnemyAI : MonoBehaviour
     }
 
 
+    // =============================================
+    // CALLED BY ATTACK ANIMATION EVENT
+    // =============================================
+
+    public void DealAttackDamage()
+    {
+        // Don't damage dead player
+        if (playerHealth != null &&
+            playerHealth.IsDead)
+        {
+            return;
+        }
+
+        if (attackPoint == null)
+            return;
+
+        Collider[] hits =
+            Physics.OverlapSphere(
+                attackPoint.position,
+                damageRadius,
+                playerLayer
+            );
+
+        foreach (Collider hit in hits)
+        {
+            PlayerHealth health =
+                hit.GetComponentInParent<PlayerHealth>();
+
+            if (health != null &&
+                !health.IsDead)
+            {
+                health.TakeDamage(
+                    attackDamage
+                );
+
+                // Only one hit per attack
+                break;
+            }
+        }
+    }
+
+
     void OnDrawGizmosSelected()
     {
+        // Detection range
         Gizmos.DrawWireSphere(
             transform.position,
             detectionRange
         );
 
-        Gizmos.DrawWireSphere(
-            transform.position,
-            attackRange
-        );
+        // Attack range
+        if (attackPoint != null)
+        {
+            Gizmos.DrawWireSphere(
+                attackPoint.position,
+                attackRange
+            );
+        }
     }
 }
