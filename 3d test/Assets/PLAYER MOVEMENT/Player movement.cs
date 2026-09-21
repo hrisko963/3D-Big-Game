@@ -8,11 +8,13 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
 
+    public float turnSpeed = 180f;
+
     [Header("Jump")]
     public float jumpHeight = 2f;
     public float gravity = -20f;
     public int maxJumps = 2;
-
+    
     [Header("Air Dash")]
     public float dashSpeed = 20f;
     public float dashDuration = 0.15f;
@@ -32,9 +34,13 @@ public class PlayerMovement : MonoBehaviour
 
     public float climbHeight = 1.2f;
     public float climbForwardOffset = 0.4f;
-    public float climbDuration = 0.3f;
+    public float climbDuration = 0.8f;
 
     public LayerMask ledgeMask;
+    
+    [Header("Drop Hang")]
+public float dropHangCheckDistance = 0.8f;
+public float dropHangDownDistance = 2f;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -51,22 +57,46 @@ public class PlayerMovement : MonoBehaviour
     private bool isHanging;
     private bool isClimbing;
 
+
     private int jumpCount;
 
     private bool canDash;
     private float dashTimer;
     private Vector3 dashDirection;
 
+    [Header("Animation")]
+public float jumpAnimationTime = 0.4f;
+
+private float jumpAnimationTimer;
+
     private Vector3 ledgeHangPosition;
     private Vector3 ledgeClimbPosition;
 
     void Start()
+{
+    controller = GetComponent<CharacterController>();
+
+    if (animator == null)
     {
-        controller = GetComponent<CharacterController>();
+        Debug.LogError("ANIMATOR IS NOT ASSIGNED!");
     }
+    else
+    {
+        Debug.Log("Animator connected to: " + animator.gameObject.name);
+    }
+}
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+{
+    Debug.Log("CTRL pressed - DropHang triggered!");
+
+    if (animator != null)
+    {
+        animator.SetTrigger("DropHang");
+    }
+}
         if (ledgeCooldownTimer > 0)
 {
     ledgeCooldownTimer -= Time.deltaTime;
@@ -110,7 +140,10 @@ public class PlayerMovement : MonoBehaviour
             groundDistance,
             groundMask
         );
-
+        if (!isGrounded)
+{
+    Debug.Log("PLAYER IS IN AIR");
+}
         if (isGrounded)
         {
             if (velocity.y < 0)
@@ -131,11 +164,15 @@ public class PlayerMovement : MonoBehaviour
         // -------------------------
 
         float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+float z = Input.GetAxis("Vertical");
 
-        Vector3 move =
-            transform.right * x +
-            transform.forward * z;
+// A / D rotates the character
+transform.Rotate(
+    Vector3.up * x * turnSpeed * Time.deltaTime
+);
+
+// W / S moves forward and backward
+Vector3 move = transform.forward * z;
 
         if (!isDashing)
         {
@@ -151,16 +188,22 @@ public class PlayerMovement : MonoBehaviour
         // JUMP
         // -------------------------
 
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            jumpCount < maxJumps)
-        {
-            velocity.y =
-                Mathf.Sqrt(jumpHeight * -2f * gravity);
+   if (Input.GetKeyDown(KeyCode.Space) && jumpCount < maxJumps)
+{
+    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-            jumpCount++;
+    jumpCount++;
+    canDash = true;
 
-            canDash = true;
-        }
+    // Let the jump animation play before Fall can start
+    jumpAnimationTimer = jumpAnimationTime;
+
+    if (animator != null)
+    {
+        animator.SetBool("Falling", false);
+        animator.SetTrigger("Jump");
+    }
+}
 
         // -------------------------
         // AIR DASH
@@ -194,24 +237,31 @@ public class PlayerMovement : MonoBehaviour
         // GRAVITY
         // -------------------------
 
-        if (!isDashing)
-        {
-            velocity.y += gravity * Time.deltaTime;
+if (!isDashing)
+{
+    velocity.y += gravity * Time.deltaTime;
+    controller.Move(velocity * Time.deltaTime);
+}
 
-            controller.Move(
-                velocity *
-                Time.deltaTime
-            );
-        }
-        
-        if (!isGrounded && velocity.y < 0)
-        {
-             animator.SetBool("Falling", true);
-        }
-        else
-        {
-            animator.SetBool("Falling", false);
-        }
+// Falling animation
+if (jumpAnimationTimer > 0f)
+{
+    jumpAnimationTimer -= Time.deltaTime;
+}
+
+if (animator != null)
+{
+    animator.SetBool("Grounded", isGrounded);
+
+    bool isFalling =
+    !isGrounded &&
+    velocity.y < 0f &&
+    jumpAnimationTimer <= 0f;
+
+animator.SetBool("Falling", isFalling);
+
+    animator.SetBool("Falling", isFalling);
+}
         // -------------------------
         // LEDGE DETECTION
         // -------------------------
@@ -307,6 +357,11 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit topHit)
     {
         isHanging = true;
+        if (animator != null)
+{
+    animator.SetBool("Hanging", true);
+    animator.SetBool("Falling", false);
+}
 
         isDashing = false;
 
@@ -337,10 +392,20 @@ public class PlayerMovement : MonoBehaviour
     // =====================================================
 
     IEnumerator ClimbUp()
-    {
-        isClimbing = true;
-        isHanging = false;
+{
+    isClimbing = true;
+    isHanging = false;
 
+    if (animator != null)
+    {
+        animator.SetBool("Hanging", false);
+        animator.SetTrigger("Climb");
+    }
+
+    velocity = Vector3.zero;
+{
+    animator.SetBool("Hanging", false);
+}
         velocity = Vector3.zero;
 
         Vector3 startPosition =
@@ -396,16 +461,18 @@ public class PlayerMovement : MonoBehaviour
     // =====================================================
 
     void LetGo()
-    {
-        isHanging = false;
+{
+    isHanging = false;
 
-    // Prevent immediately grabbing the same ledge again
+    if (animator != null)
+    {
+        animator.SetBool("Hanging", false);
+    }
+
     ledgeCooldownTimer = ledgeGrabCooldown;
 
     velocity.y = -2f;
 
-    // Push the player slightly away from the ledge
     controller.Move(-transform.forward * 0.15f);
-        ;
-    }
+}
 }
