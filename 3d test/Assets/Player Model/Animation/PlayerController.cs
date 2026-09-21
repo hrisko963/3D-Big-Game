@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 9f;
 
     private Vector3 lastPosition;
-    private bool wasRunning;
     private bool waitingForRunStop;
+
 
     void Start()
     {
@@ -25,120 +25,164 @@ public class PlayerController : MonoBehaviour
         lastPosition = transform.position;
     }
 
+
     void Update()
     {
-        
-        // Calculate actual horizontal movement
-        Vector3 movement = transform.position - lastPosition;
+        // -------------------------
+        // ACTUAL MOVEMENT SPEED
+        // -------------------------
 
-        // We only want horizontal movement for Walk/Run
+        Vector3 movement =
+            transform.position - lastPosition;
+
+        // Ignore vertical movement
         movement.y = 0f;
 
-        float currentSpeed = movement.magnitude / Time.deltaTime;
+        float currentSpeed =
+            movement.magnitude / Time.deltaTime;
 
         lastPosition = transform.position;
+
 
         // -------------------------
         // WALK SPEED
         // -------------------------
 
-        float walkAmount = Mathf.Clamp01(
-            currentSpeed / walkSpeed
-        );
+        float walkAmount =
+            Mathf.Clamp01(currentSpeed / walkSpeed);
+
 
         // -------------------------
         // RUN SPEED
         // -------------------------
 
-        float runAmount = Mathf.Clamp01(
-            currentSpeed / runSpeed
+        float runAmount =
+            Mathf.Clamp01(currentSpeed / runSpeed);
+
+
+        // -------------------------
+        // WALKING BACKWARD
+        // -------------------------
+
+        bool walkingBackward =
+            Input.GetKey(KeyCode.S) &&
+            controller.isGrounded;
+
+        animator.SetBool(
+            "WalkingBackward",
+            walkingBackward
         );
 
-        bool runDirection =
-    Input.GetKey(KeyCode.W) ||
-    Input.GetKey(KeyCode.A) ||
-    Input.GetKey(KeyCode.D);
 
-bool isRunning =
-    Input.GetKey(KeyCode.LeftShift) &&
-    Input.GetKey(KeyCode.W) &&
-    controller.isGrounded;
-    
-    
+        // -------------------------
+        // RUNNING
+        // -------------------------
 
-if (isRunning)
-{
-    animator.SetFloat(
-        "WalkSpeed",
-        0f,
-        0.1f,
-        Time.deltaTime
-    );
+        bool isRunning =
+            Input.GetKey(KeyCode.LeftShift) &&
+            Input.GetKey(KeyCode.W) &&
+            controller.isGrounded;
 
-    animator.SetFloat(
-        "RunSpeed",
-        runAmount,
-        0.1f,
-        Time.deltaTime
-    );
-}
-else
-{
-    animator.SetFloat(
-        "RunSpeed",
-        0f,
-        0.1f,
-        Time.deltaTime
-    );
 
-    animator.SetFloat(
-        "WalkSpeed",
-        walkAmount,
-        0.1f,
-        Time.deltaTime
-    );
-}
+        // -------------------------
+        // WALK / RUN ANIMATION
+        // -------------------------
 
-// -------------------------
-// RUN STOP
-// -------------------------
-// Player is actively running
-// -------------------------
-// RUN STOP
-// -------------------------
+        if (walkingBackward)
+        {
+            // Stop forward Walk/Run animation parameters
+            // because WalkBackward handles the animation
 
-bool hasMovementInput =
-    Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f ||
-    Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f;
+            animator.SetFloat(
+                "WalkSpeed",
+                0f,
+                0.1f,
+                Time.deltaTime
+            );
 
-// Remember that we were running
-if (isRunning && hasMovementInput)
-{
-    waitingForRunStop = true;
-}
+            animator.SetFloat(
+                "RunSpeed",
+                0f,
+                0.1f,
+                Time.deltaTime
+            );
+        }
+        else if (isRunning)
+        {
+            animator.SetFloat(
+                "WalkSpeed",
+                0f,
+                0.1f,
+                Time.deltaTime
+            );
 
-// Trigger RunStop when movement input is released
-if (waitingForRunStop &&
-    !hasMovementInput &&
-    controller.isGrounded)
-{
-    animator.SetTrigger("RunStop");
-    waitingForRunStop = false;
-}
+            animator.SetFloat(
+                "RunSpeed",
+                runAmount,
+                0.1f,
+                Time.deltaTime
+            );
+        }
+        else
+        {
+            animator.SetFloat(
+                "RunSpeed",
+                0f,
+                0.1f,
+                Time.deltaTime
+            );
 
-// Releasing Shift while still moving means:
-// Run -> Walk, NOT Run -> RunStop
-if (!Input.GetKey(KeyCode.LeftShift) &&
-    hasMovementInput)
-{
-    waitingForRunStop = false;
-}
+            animator.SetFloat(
+                "WalkSpeed",
+                walkAmount,
+                0.1f,
+                Time.deltaTime
+            );
+        }
 
-// Don't RunStop in the air
-if (!controller.isGrounded)
-{
-    waitingForRunStop = false;
-}
+
+        // -------------------------
+        // RUN STOP
+        // -------------------------
+
+        bool hasMovementInput =
+            Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f ||
+            Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f;
+
+
+        // Remember that we were running
+        if (isRunning && hasMovementInput)
+        {
+            waitingForRunStop = true;
+        }
+
+
+        // Trigger RunStop when movement input is released
+        if (waitingForRunStop &&
+            !hasMovementInput &&
+            controller.isGrounded)
+        {
+            animator.SetTrigger("RunStop");
+
+            waitingForRunStop = false;
+        }
+
+
+        // Releasing Shift while still moving means:
+        // Run -> Walk instead of Run -> RunStop
+        if (!Input.GetKey(KeyCode.LeftShift) &&
+            hasMovementInput)
+        {
+            waitingForRunStop = false;
+        }
+
+
+        // Don't RunStop while airborne
+        if (!controller.isGrounded)
+        {
+            waitingForRunStop = false;
+        }
+
 
         // -------------------------
         // GROUNDED
@@ -148,6 +192,7 @@ if (!controller.isGrounded)
             "Grounded",
             controller.isGrounded
         );
+
 
         // -------------------------
         // AIR DASH
