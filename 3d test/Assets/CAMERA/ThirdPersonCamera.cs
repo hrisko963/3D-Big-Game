@@ -38,6 +38,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 smoothPivotPosition;
     private Vector3 pivotVelocity;
 
+
     void Start()
     {
         if (target == null)
@@ -52,40 +53,57 @@ public class ThirdPersonCamera : MonoBehaviour
         smoothPitch = pitch;
 
         smoothPivotPosition =
-            target.position + Vector3.up * height;
+            target.position +
+            Vector3.up * height;
 
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState =
+            CursorLockMode.Locked;
+
         Cursor.visible = false;
     }
+
 
     void LateUpdate()
     {
         if (target == null)
             return;
 
+
         // -------------------------
         // MOUSE INPUT
         // -------------------------
 
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        float mouseY = Input.GetAxisRaw("Mouse Y");
+        float mouseX =
+            Input.GetAxisRaw("Mouse X");
 
-        yaw += mouseX *
-               mouseSensitivity *
-               Time.deltaTime;
+        float mouseY =
+            Input.GetAxisRaw("Mouse Y");
+
+
+        yaw +=
+            mouseX *
+            mouseSensitivity *
+            Time.deltaTime;
 
         if (invertY)
         {
-            pitch += mouseY *
-                     mouseSensitivity *
-                     Time.deltaTime;
+            pitch +=
+                mouseY *
+                mouseSensitivity *
+                Time.deltaTime;
         }
         else
         {
-            pitch -= mouseY *
-                     mouseSensitivity *
-                     Time.deltaTime;
+            pitch -=
+                mouseY *
+                mouseSensitivity *
+                Time.deltaTime;
         }
+
+
+        // -------------------------
+        // KEEP VALUES STABLE
+        // -------------------------
 
         pitch = Mathf.Clamp(
             pitch,
@@ -93,24 +111,44 @@ public class ThirdPersonCamera : MonoBehaviour
             maxPitch
         );
 
+        // Only wrap when yaw gets large.
+        // This avoids interfering with SmoothDampAngle.
+        if (yaw > 360f || yaw < -360f)
+        {
+            yaw =
+                Mathf.Repeat(
+                    yaw + 180f,
+                    360f
+                ) - 180f;
+
+            smoothYaw =
+                Mathf.Repeat(
+                    smoothYaw + 180f,
+                    360f
+                ) - 180f;
+        }
+
 
         // -------------------------
-        // SMOOTH CAMERA ROTATION
+        // SMOOTH ROTATION
         // -------------------------
 
-        smoothYaw = Mathf.SmoothDampAngle(
-            smoothYaw,
-            yaw,
-            ref yawVelocity,
-            rotationSmoothTime
-        );
+        smoothYaw =
+            Mathf.SmoothDampAngle(
+                smoothYaw,
+                yaw,
+                ref yawVelocity,
+                rotationSmoothTime
+            );
 
-        smoothPitch = Mathf.SmoothDampAngle(
-            smoothPitch,
-            pitch,
-            ref pitchVelocity,
-            rotationSmoothTime
-        );
+        smoothPitch =
+            Mathf.SmoothDampAngle(
+                smoothPitch,
+                pitch,
+                ref pitchVelocity,
+                rotationSmoothTime
+            );
+
 
         Quaternion cameraRotation =
             Quaternion.Euler(
@@ -121,7 +159,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
 
         // -------------------------
-        // SMOOTH FOLLOW TARGET
+        // CAMERA PIVOT
         // -------------------------
 
         Vector3 desiredPivotPosition =
@@ -190,8 +228,11 @@ public class ThirdPersonCamera : MonoBehaviour
         // APPLY CAMERA
         // -------------------------
 
-        transform.position = desiredPosition;
-        transform.rotation = cameraRotation;
+        transform.position =
+            desiredPosition;
+
+        transform.rotation =
+            cameraRotation;
 
 
         // -------------------------
