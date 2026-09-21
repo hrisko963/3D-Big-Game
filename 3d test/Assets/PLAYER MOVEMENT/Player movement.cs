@@ -5,7 +5,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
-    public float rotationSpeed = 12f;
+
+    [Header("Rotation Smoothing")]
+    public float rotationSmoothTime = 0.12f;
 
     [Header("Camera")]
     public Transform cameraTransform;
@@ -13,10 +15,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     public float jumpHeight = 2f;
     public float gravity = -20f;
-
-    [Header("Air Dash")]
-    public float dashSpeed = 20f;
-    public float dashDuration = 0.15f;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -30,22 +28,49 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
 
     private Vector3 velocity;
-    private Vector3 dashDirection;
 
     private bool isGrounded;
     private bool isRunning;
-    private bool isDashing;
-    private bool canDash;
+    private bool sprintLocked;
 
-    private float dashTimer;
     private float jumpAnimationTimer;
+    private float airSpeed;
+
+    // Smooth visual turning only
+    private float rotationVelocity;
+
+
+    // =====================================================
+    // PUBLIC STATES
+    // =====================================================
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+    }
+
+    public bool IsRunning
+    {
+        get { return isRunning; }
+    }
+
+    public bool HasMovementInput
+    {
+        get
+        {
+            return
+                Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f ||
+                Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f;
+        }
+    }
 
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
 
-        // Automatically use Main Camera if none is assigned
+        airSpeed = walkSpeed;
+
         if (cameraTransform == null && Camera.main != null)
         {
             cameraTransform = Camera.main.transform;
@@ -75,15 +100,9 @@ public class PlayerMovement : MonoBehaviour
             groundMask
         );
 
-        if (isGrounded)
+        if (isGrounded && velocity.y < 0f)
         {
-            if (velocity.y < 0f)
-            {
-                velocity.y = -2f;
-            }
-
-            canDash = true;
-            isDashing = false;
+            velocity.y = -2f;
         }
 
 
@@ -91,27 +110,39 @@ public class PlayerMovement : MonoBehaviour
         // INPUT
         // -------------------------
 
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
+        float horizontal =
+            Input.GetAxisRaw("Horizontal");
+
+        float vertical =
+            Input.GetAxisRaw("Vertical");
 
         Vector3 inputDirection =
-            new Vector3(horizontal, 0f, vertical);
+            new Vector3(
+                horizontal,
+                0f,
+                vertical
+            );
 
-        inputDirection = Vector3.ClampMagnitude(
-            inputDirection,
-            1f
-        );
+        inputDirection =
+            Vector3.ClampMagnitude(
+                inputDirection,
+                1f
+            );
+
+        bool hasMovementInput =
+            inputDirection.sqrMagnitude > 0.01f;
 
 
         // -------------------------
-        // CAMERA-RELATIVE MOVEMENT
+        // CAMERA RELATIVE MOVEMENT
         // -------------------------
 
-        Vector3 moveDirection = Vector3.zero;
+        Vector3 moveDirection =
+            Vector3.zero;
 
-        if (cameraTransform != null)
+        if (cameraTransform != null &&
+            hasMovementInput)
         {
-            // Camera forward without vertical tilt
             Vector3 cameraForward =
                 cameraTransform.forward;
 
@@ -119,7 +150,6 @@ public class PlayerMovement : MonoBehaviour
             cameraForward.Normalize();
 
 
-            // Camera right without vertical tilt
             Vector3 cameraRight =
                 cameraTransform.right;
 
@@ -127,60 +157,105 @@ public class PlayerMovement : MonoBehaviour
             cameraRight.Normalize();
 
 
-            // Convert WASD into camera-relative direction
             moveDirection =
                 cameraForward * inputDirection.z +
                 cameraRight * inputDirection.x;
 
-            moveDirection = Vector3.ClampMagnitude(
-                moveDirection,
-                1f
-            );
+            moveDirection =
+                Vector3.ClampMagnitude(
+                    moveDirection,
+                    1f
+                );
         }
 
 
         // -------------------------
-        // RUN
+        // SPRINT LOCK
         // -------------------------
 
-        bool hasMovement =
-            moveDirection.sqrMagnitude > 0.01f;
+        if (!isGrounded &&
+            Input.GetKey(KeyCode.LeftShift))
+        {
+            sprintLocked = true;
+        }
+
+        // Must release Shift after landing
+        if (isGrounded &&
+            !Input.GetKey(KeyCode.LeftShift))
+        {
+            sprintLocked = false;
+        }
+
+
+        // -------------------------
+        // RUN STATE
+        // -------------------------
 
         isRunning =
+            isGrounded &&
+            hasMovementInput &&
             Input.GetKey(KeyCode.LeftShift) &&
-            hasMovement &&
-            isGrounded;
-
-        float currentSpeed =
-            isRunning ? runSpeed : walkSpeed;
+            !sprintLocked;
 
 
         // -------------------------
-        // ROTATE PLAYER
+        // MOVEMENT SPEED
         // -------------------------
 
-        if (hasMovement && !isDashing)
+        float currentSpeed;
+
+        if (isGrounded)
         {
-            Quaternion targetRotation =
-                Quaternion.LookRotation(
-                    moveDirection,
-                    Vector3.up
+            currentSpeed =
+                isRunning
+                    ? runSpeed
+                    : walkSpeed;
+
+            // Remember takeoff speed
+            airSpeed = currentSpeed;
+        }
+        else
+        {
+            // Keep horizontal speed in the air
+            currentSpeed = airSpeed;
+        }
+
+
+        // -------------------------
+        // SMOOTH PLAYER ROTATION
+        // -------------------------
+
+        if (hasMovementInput &&
+            moveDirection.sqrMagnitude > 0.01f)
+        {
+            float targetAngle =
+                Mathf.Atan2(
+                    moveDirection.x,
+                    moveDirection.z
+                ) * Mathf.Rad2Deg;
+
+            float smoothAngle =
+                Mathf.SmoothDampAngle(
+                    transform.eulerAngles.y,
+                    targetAngle,
+                    ref rotationVelocity,
+                    rotationSmoothTime
                 );
 
             transform.rotation =
-                Quaternion.Slerp(
-                    transform.rotation,
-                    targetRotation,
-                    rotationSpeed * Time.deltaTime
+                Quaternion.Euler(
+                    0f,
+                    smoothAngle,
+                    0f
                 );
         }
 
 
         // -------------------------
-        // MOVE PLAYER
+        // HORIZONTAL MOVEMENT
         // -------------------------
 
-        if (!isDashing)
+        if (hasMovementInput)
         {
             controller.Move(
                 moveDirection *
@@ -197,12 +272,18 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) &&
             isGrounded)
         {
+            // Preserve current ground speed
+            airSpeed =
+                isRunning
+                    ? runSpeed
+                    : walkSpeed;
+
             velocity.y =
                 Mathf.Sqrt(
-                    jumpHeight * -2f * gravity
+                    jumpHeight *
+                    -2f *
+                    gravity
                 );
-
-            canDash = true;
 
             jumpAnimationTimer =
                 jumpAnimationTime;
@@ -220,52 +301,21 @@ public class PlayerMovement : MonoBehaviour
 
 
         // -------------------------
-        // AIR DASH
-        // -------------------------
-
-        if (!isGrounded &&
-            Input.GetKeyDown(KeyCode.LeftShift) &&
-            canDash &&
-            !isDashing)
-        {
-            StartDash(moveDirection);
-        }
-
-
-        if (isDashing)
-        {
-            controller.Move(
-                dashDirection *
-                dashSpeed *
-                Time.deltaTime
-            );
-
-            dashTimer -= Time.deltaTime;
-
-            if (dashTimer <= 0f)
-            {
-                isDashing = false;
-            }
-        }
-
-
-        // -------------------------
         // GRAVITY
         // -------------------------
 
-        if (!isDashing)
-        {
-            velocity.y +=
-                gravity * Time.deltaTime;
+        velocity.y +=
+            gravity *
+            Time.deltaTime;
 
-            controller.Move(
-                velocity * Time.deltaTime
-            );
-        }
+        controller.Move(
+            velocity *
+            Time.deltaTime
+        );
 
 
         // -------------------------
-        // ANIMATION
+        // JUMP / FALL ANIMATION
         // -------------------------
 
         if (jumpAnimationTimer > 0f)
@@ -291,28 +341,5 @@ public class PlayerMovement : MonoBehaviour
                 isFalling
             );
         }
-    }
-
-
-    // =====================================================
-    // AIR DASH
-    // =====================================================
-
-    void StartDash(Vector3 direction)
-    {
-        if (direction.sqrMagnitude < 0.01f)
-        {
-            direction = transform.forward;
-        }
-
-        dashDirection =
-            direction.normalized;
-
-        isDashing = true;
-        canDash = false;
-
-        dashTimer = dashDuration;
-
-        velocity.y = 0f;
     }
 }

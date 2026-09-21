@@ -18,7 +18,8 @@ public class ThirdPersonCamera : MonoBehaviour
     public float maxPitch = 60f;
 
     [Header("Smoothing")]
-    public float positionSmoothTime = 0.05f;
+    public float followSmoothTime = 0.08f;
+    public float rotationSmoothTime = 0.04f;
 
     [Header("Camera Collision")]
     public LayerMask collisionMask;
@@ -28,8 +29,14 @@ public class ThirdPersonCamera : MonoBehaviour
     private float yaw;
     private float pitch = 15f;
 
-    private Vector3 positionVelocity;
+    private float smoothYaw;
+    private float smoothPitch;
 
+    private float yawVelocity;
+    private float pitchVelocity;
+
+    private Vector3 smoothPivotPosition;
+    private Vector3 pivotVelocity;
 
     void Start()
     {
@@ -39,37 +46,45 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
         }
 
-        // Start behind the player's current direction
-        yaw = target.eulerAngles.y;
+        yaw = transform.eulerAngles.y;
+        smoothYaw = yaw;
 
-        // Lock mouse
+        smoothPitch = pitch;
+
+        smoothPivotPosition =
+            target.position + Vector3.up * height;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
 
     void LateUpdate()
     {
         if (target == null)
             return;
 
-
         // -------------------------
         // MOUSE INPUT
         // -------------------------
 
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        float mouseX = Input.GetAxisRaw("Mouse X");
+        float mouseY = Input.GetAxisRaw("Mouse Y");
 
-        yaw += mouseX * mouseSensitivity * Time.deltaTime;
+        yaw += mouseX *
+               mouseSensitivity *
+               Time.deltaTime;
 
         if (invertY)
         {
-            pitch += mouseY * mouseSensitivity * Time.deltaTime;
+            pitch += mouseY *
+                     mouseSensitivity *
+                     Time.deltaTime;
         }
         else
         {
-            pitch -= mouseY * mouseSensitivity * Time.deltaTime;
+            pitch -= mouseY *
+                     mouseSensitivity *
+                     Time.deltaTime;
         }
 
         pitch = Mathf.Clamp(
@@ -80,24 +95,57 @@ public class ThirdPersonCamera : MonoBehaviour
 
 
         // -------------------------
-        // CAMERA ROTATION
+        // SMOOTH CAMERA ROTATION
         // -------------------------
+
+        smoothYaw = Mathf.SmoothDampAngle(
+            smoothYaw,
+            yaw,
+            ref yawVelocity,
+            rotationSmoothTime
+        );
+
+        smoothPitch = Mathf.SmoothDampAngle(
+            smoothPitch,
+            pitch,
+            ref pitchVelocity,
+            rotationSmoothTime
+        );
 
         Quaternion cameraRotation =
-            Quaternion.Euler(pitch, yaw, 0f);
+            Quaternion.Euler(
+                smoothPitch,
+                smoothYaw,
+                0f
+            );
 
 
         // -------------------------
-        // TARGET POSITION
+        // SMOOTH FOLLOW TARGET
         // -------------------------
 
-        Vector3 pivotPosition =
+        Vector3 desiredPivotPosition =
             target.position +
             Vector3.up * height;
 
+        smoothPivotPosition =
+            Vector3.SmoothDamp(
+                smoothPivotPosition,
+                desiredPivotPosition,
+                ref pivotVelocity,
+                followSmoothTime
+            );
+
+
+        // -------------------------
+        // CAMERA POSITION
+        // -------------------------
+
         Vector3 desiredPosition =
-            pivotPosition -
-            cameraRotation * Vector3.forward * distance;
+            smoothPivotPosition -
+            cameraRotation *
+            Vector3.forward *
+            distance;
 
 
         // -------------------------
@@ -105,63 +153,64 @@ public class ThirdPersonCamera : MonoBehaviour
         // -------------------------
 
         Vector3 direction =
-            desiredPosition - pivotPosition;
+            desiredPosition -
+            smoothPivotPosition;
 
         float desiredDistance =
             direction.magnitude;
 
-        direction.Normalize();
-
-        RaycastHit hit;
-
-        if (Physics.SphereCast(
-            pivotPosition,
-            collisionRadius,
-            direction,
-            out hit,
-            desiredDistance,
-            collisionMask,
-            QueryTriggerInteraction.Ignore))
+        if (desiredDistance > 0.001f)
         {
-            desiredPosition =
-                pivotPosition +
-                direction *
-                Mathf.Max(
-                    hit.distance - collisionOffset,
-                    0.1f
-                );
+            direction.Normalize();
+
+            RaycastHit hit;
+
+            if (Physics.SphereCast(
+                smoothPivotPosition,
+                collisionRadius,
+                direction,
+                out hit,
+                desiredDistance,
+                collisionMask,
+                QueryTriggerInteraction.Ignore))
+            {
+                desiredPosition =
+                    smoothPivotPosition +
+                    direction *
+                    Mathf.Max(
+                        hit.distance -
+                        collisionOffset,
+                        0.1f
+                    );
+            }
         }
 
 
         // -------------------------
-        // SMOOTH FOLLOW
+        // APPLY CAMERA
         // -------------------------
 
-        transform.position =
-            Vector3.SmoothDamp(
-                transform.position,
-                desiredPosition,
-                ref positionVelocity,
-                positionSmoothTime
-            );
-
+        transform.position = desiredPosition;
         transform.rotation = cameraRotation;
 
 
         // -------------------------
-        // ESC = RELEASE MOUSE
+        // CURSOR
         // -------------------------
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState =
+                CursorLockMode.None;
+
             Cursor.visible = true;
         }
 
-        // Left click locks it again
         if (Input.GetMouseButtonDown(0))
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState =
+                CursorLockMode.Locked;
+
             Cursor.visible = false;
         }
     }

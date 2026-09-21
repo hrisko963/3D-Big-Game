@@ -1386,7 +1386,8 @@ MonoBehaviour:
   invertY: 0
   minPitch: -25
   maxPitch: 60
-  positionSmoothTime: 0
+  followSmoothTime: 0.1
+  rotationSmoothTime: 0.05
   collisionMask:
     serializedVersion: 2
     m_Bits: 2147483648
@@ -2157,6 +2158,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 342e92f4db219f34c825dab4bc3030bc, type: 3}
       propertyPath: m_Name
       value: fontana bate
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 342e92f4db219f34c825dab4bc3030bc, type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5432,12 +5437,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   walkSpeed: 5
   runSpeed: 15
-  rotationSpeed: 12
+  rotationSmoothTime: 0.12
   cameraTransform: {fileID: 330585546}
   jumpHeight: 4
   gravity: -25
-  dashSpeed: 30
-  dashDuration: 0.3
   groundCheck: {fileID: 1841450177}
   groundDistance: 0.2
   groundMask:
@@ -5564,6 +5567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   animator: {fileID: 1653394042}
   controller: {fileID: 1600361362}
+  playerMovement: {fileID: 0}
   walkSpeed: 5
   runSpeed: 9
 --- !u!1 &1653394040 stripped
@@ -5976,7 +5980,7 @@ GameObject:
   - component: {fileID: 1806364241}
   - component: {fileID: 1806364240}
   - component: {fileID: 1806364239}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6340,7 +6344,7 @@ GameObject:
   - component: {fileID: 1919450297}
   - component: {fileID: 1919450296}
   - component: {fileID: 1919450295}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6731,6 +6735,10 @@ PrefabInstance:
     - target: {fileID: 2842660390246455710, guid: bf83b883f7930484f8b7251959840d67, type: 3}
       propertyPath: m_Name
       value: Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 2842660390246455710, guid: bf83b883f7930484f8b7251959840d67, type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

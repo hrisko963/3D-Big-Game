@@ -5,137 +5,200 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     public Animator animator;
     public CharacterController controller;
+    public PlayerMovement playerMovement;
 
     [Header("Movement Settings")]
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
 
     private Vector3 lastPosition;
+
     private bool waitingForRunStop;
+    private bool wasGrounded;
 
 
     void Start()
     {
         if (controller == null)
-            controller = GetComponent<CharacterController>();
+        {
+            controller =
+                GetComponent<CharacterController>();
+        }
 
         if (animator == null)
-            animator = GetComponent<Animator>();
+        {
+            animator =
+                GetComponent<Animator>();
+        }
 
-        lastPosition = transform.position;
+        if (playerMovement == null)
+        {
+            playerMovement =
+                GetComponent<PlayerMovement>();
+        }
+
+        lastPosition =
+            transform.position;
+
+        wasGrounded =
+            playerMovement.IsGrounded;
     }
 
 
     void Update()
     {
         // -------------------------
-        // ACTUAL MOVEMENT SPEED
+        // ACTUAL HORIZONTAL SPEED
         // -------------------------
 
         Vector3 movement =
-            transform.position - lastPosition;
+            transform.position -
+            lastPosition;
 
-        // Ignore vertical movement
         movement.y = 0f;
 
         float currentSpeed =
-            movement.magnitude / Time.deltaTime;
+            movement.magnitude /
+            Mathf.Max(
+                Time.deltaTime,
+                0.0001f
+            );
 
-        lastPosition = transform.position;
-
-
-        // -------------------------
-        // WALK SPEED
-        // -------------------------
-
-        float walkAmount =
-            Mathf.Clamp01(currentSpeed / walkSpeed);
+        lastPosition =
+            transform.position;
 
 
         // -------------------------
-        // RUN SPEED
+        // GET MOVEMENT STATE
         // -------------------------
 
-        float runAmount =
-            Mathf.Clamp01(currentSpeed / runSpeed);
+        bool isGrounded =
+            playerMovement.IsGrounded;
+
+        bool isRunning =
+            playerMovement.IsRunning;
+
+        bool hasMovementInput =
+            playerMovement.HasMovementInput;
 
 
         // -------------------------
-        // WALKING BACKWARD
+        // GROUNDED
         // -------------------------
-
-        bool walkingBackward =
-            Input.GetKey(KeyCode.S) &&
-            controller.isGrounded;
 
         animator.SetBool(
-            "WalkingBackward",
-            walkingBackward
+            "Grounded",
+            isGrounded
         );
 
 
         // -------------------------
-        // RUNNING
+        // ANIMATION SPEED VALUES
         // -------------------------
 
-        bool isRunning =
-            Input.GetKey(KeyCode.LeftShift) &&
-            Input.GetKey(KeyCode.W) &&
-            controller.isGrounded;
+        float walkAmount =
+            Mathf.Clamp01(
+                currentSpeed / walkSpeed
+            );
+
+        float runAmount =
+            Mathf.Clamp01(
+                currentSpeed / runSpeed
+            );
 
 
         // -------------------------
-        // WALK / RUN ANIMATION
+        // AIRBORNE
         // -------------------------
 
-        if (walkingBackward)
+        if (!isGrounded)
         {
-            // Stop forward Walk/Run animation parameters
-            // because WalkBackward handles the animation
-
+            // Jump/Fall animations take control.
             animator.SetFloat(
                 "WalkSpeed",
                 0f,
-                0.1f,
+                0.08f,
                 Time.deltaTime
             );
 
             animator.SetFloat(
                 "RunSpeed",
                 0f,
-                0.1f,
+                0.08f,
+                Time.deltaTime
+            );
+
+            waitingForRunStop = false;
+        }
+
+
+        // -------------------------
+        // IDLE
+        // -------------------------
+
+        else if (!hasMovementInput)
+        {
+            animator.SetFloat(
+                "WalkSpeed",
+                0f,
+                0.08f,
+                Time.deltaTime
+            );
+
+            animator.SetFloat(
+                "RunSpeed",
+                0f,
+                0.08f,
                 Time.deltaTime
             );
         }
+
+
+        // -------------------------
+        // RUN
+        // -------------------------
+
         else if (isRunning)
         {
             animator.SetFloat(
                 "WalkSpeed",
                 0f,
-                0.1f,
+                0.08f,
                 Time.deltaTime
             );
 
             animator.SetFloat(
                 "RunSpeed",
-                runAmount,
-                0.1f,
+                Mathf.Max(
+                    runAmount,
+                    0.1f
+                ),
+                0.08f,
                 Time.deltaTime
             );
         }
+
+
+        // -------------------------
+        // WALK
+        // -------------------------
+
         else
         {
             animator.SetFloat(
                 "RunSpeed",
                 0f,
-                0.1f,
+                0.08f,
                 Time.deltaTime
             );
 
             animator.SetFloat(
                 "WalkSpeed",
-                walkAmount,
-                0.1f,
+                Mathf.Max(
+                    walkAmount,
+                    0.1f
+                ),
+                0.08f,
                 Time.deltaTime
             );
         }
@@ -145,63 +208,60 @@ public class PlayerController : MonoBehaviour
         // RUN STOP
         // -------------------------
 
-        bool hasMovementInput =
-            Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f ||
-            Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f;
-
-
-        // Remember that we were running
-        if (isRunning && hasMovementInput)
+        if (isRunning &&
+            hasMovementInput)
         {
             waitingForRunStop = true;
         }
 
 
-        // Trigger RunStop when movement input is released
+        // Player stopped after running
         if (waitingForRunStop &&
             !hasMovementInput &&
-            controller.isGrounded)
+            isGrounded)
         {
-            animator.SetTrigger("RunStop");
+            animator.SetTrigger(
+                "RunStop"
+            );
 
             waitingForRunStop = false;
         }
 
 
-        // Releasing Shift while still moving means:
-        // Run -> Walk instead of Run -> RunStop
-        if (!Input.GetKey(KeyCode.LeftShift) &&
+        // If player is moving but is no longer
+        // actually running, cancel RunStop.
+        if (!isRunning &&
             hasMovementInput)
         {
             waitingForRunStop = false;
         }
 
 
-        // Don't RunStop while airborne
-        if (!controller.isGrounded)
+        // Never RunStop in the air
+        if (!isGrounded)
         {
             waitingForRunStop = false;
         }
 
 
         // -------------------------
-        // GROUNDED
+        // LANDING
         // -------------------------
 
-        animator.SetBool(
-            "Grounded",
-            controller.isGrounded
-        );
+        bool justLanded =
+            !wasGrounded &&
+            isGrounded;
 
-
-        // -------------------------
-        // AIR DASH
-        // -------------------------
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) &&
-            !controller.isGrounded)
+        if (justLanded)
         {
-            animator.SetTrigger("Dash");
+            animator.ResetTrigger(
+                "RunStop"
+            );
+
+            waitingForRunStop = false;
         }
+
+        wasGrounded =
+            isGrounded;
     }
 }
