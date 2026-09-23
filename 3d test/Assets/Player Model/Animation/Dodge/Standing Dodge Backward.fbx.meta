@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5697152de9258334db45810107dba69a
+guid: 149797b5a51ed6b408b123deac9b5d05
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,13 +31,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Jump
+      name: Dodge Back
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 100
+      lastFrame: 97
       wrapMode: 0
-      orientationOffsetY: -15.89
+      orientationOffsetY: -40
       level: 0
       cycleOffset: 0
       loop: 0
@@ -45,8 +45,8 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0

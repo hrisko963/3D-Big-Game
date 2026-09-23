@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Camera")]
     public Transform cameraTransform;
+    
 
     [Header("Jump")]
     public float jumpHeight = 2f;
@@ -26,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpAnimationTime = 0.4f;
 
     private CharacterController controller;
+
+    [Header("Lock On")]
+    public PlayerLockOn lockOn;
 
     private Vector3 velocity;
 
@@ -69,6 +73,9 @@ public class PlayerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
 
+        if (lockOn == null)
+    lockOn = GetComponent<PlayerLockOn>();
+
         airSpeed = walkSpeed;
 
         if (cameraTransform == null && Camera.main != null)
@@ -86,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("CAMERA IS NOT ASSIGNED!");
         }
     }
-
+    
 
     void Update()
     {
@@ -226,7 +233,8 @@ public class PlayerMovement : MonoBehaviour
         // -------------------------
 
         if (hasMovementInput &&
-            moveDirection.sqrMagnitude > 0.01f)
+    moveDirection.sqrMagnitude > 0.01f &&
+    (lockOn == null || !lockOn.IsLockedOn))
         {
             float targetAngle =
                 Mathf.Atan2(

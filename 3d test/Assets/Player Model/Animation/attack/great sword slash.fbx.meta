@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5697152de9258334db45810107dba69a
+guid: 4db7ae0a8cfbac9409ada60f8f1c453c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,13 +31,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Jump
+      name: attack
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 100
+      lastFrame: 76
       wrapMode: 0
-      orientationOffsetY: -15.89
+      orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
@@ -54,7 +54,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.636066
+        functionName: DealAttackDamage
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

@@ -5,9 +5,17 @@ public class ThirdPersonCamera : MonoBehaviour
     [Header("Target")]
     public Transform target;
 
+    [Header("Lock On")]
+    public PlayerLockOn lockOn;
+    public float lockOnRotationSpeed = 5f;
+    public float lockOnHeightOffset = 1.2f;
+
     [Header("Camera Position")]
     public float distance = 5f;
     public float height = 1.7f;
+
+    [Header("Shoulder Camera")]
+    public float shoulderOffset = 0.8f;
 
     [Header("Mouse")]
     public float mouseSensitivity = 180f;
@@ -38,7 +46,6 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 smoothPivotPosition;
     private Vector3 pivotVelocity;
 
-
     void Start()
     {
         if (target == null)
@@ -47,38 +54,135 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
         }
 
-        yaw = transform.eulerAngles.y;
-        smoothYaw = yaw;
+        if (lockOn == null)
+            lockOn = target.GetComponent<PlayerLockOn>();
 
+        yaw = transform.eulerAngles.y;
+
+        smoothYaw = yaw;
         smoothPitch = pitch;
 
         smoothPivotPosition =
             target.position +
             Vector3.up * height;
 
-        Cursor.lockState =
-            CursorLockMode.Locked;
-
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-
 
     void LateUpdate()
     {
         if (target == null)
             return;
 
+        // FREE CAMERA OR LOCK-ON CAMERA
+        if (lockOn != null &&
+            lockOn.IsLockedOn &&
+            lockOn.CurrentTarget != null)
+        {
+            UpdateLockOnCamera();
+        }
+        else
+        {
+            UpdateFreeCamera();
+        }
 
-        // -------------------------
-        // MOUSE INPUT
-        // -------------------------
+        Quaternion cameraRotation =
+            Quaternion.Euler(
+                smoothPitch,
+                smoothYaw,
+                0f
+            );
 
+        // Player camera pivot
+        Vector3 desiredPivotPosition =
+            target.position +
+            Vector3.up * height;
+
+        smoothPivotPosition =
+            Vector3.SmoothDamp(
+                smoothPivotPosition,
+                desiredPivotPosition,
+                ref pivotVelocity,
+                followSmoothTime
+            );
+
+        // RIGHT SHOULDER OFFSET
+        Vector3 shoulderDirection =
+            cameraRotation * Vector3.right;
+
+        Vector3 cameraPivot =
+            smoothPivotPosition +
+            shoulderDirection * shoulderOffset;
+
+        // Put camera behind shoulder
+        Vector3 desiredPosition =
+            cameraPivot -
+            cameraRotation *
+            Vector3.forward *
+            distance;
+
+        // CAMERA COLLISION
+        Vector3 direction =
+            desiredPosition -
+            cameraPivot;
+
+        float desiredDistance =
+            direction.magnitude;
+
+        if (desiredDistance > 0.001f)
+        {
+            direction.Normalize();
+
+            RaycastHit hit;
+
+            if (Physics.SphereCast(
+                cameraPivot,
+                collisionRadius,
+                direction,
+                out hit,
+                desiredDistance,
+                collisionMask,
+                QueryTriggerInteraction.Ignore))
+            {
+                desiredPosition =
+                    cameraPivot +
+                    direction *
+                    Mathf.Max(
+                        hit.distance - collisionOffset,
+                        0.1f
+                    );
+            }
+        }
+
+        transform.position = desiredPosition;
+        transform.rotation = cameraRotation;
+
+        // CURSOR
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState =
+                CursorLockMode.None;
+
+            Cursor.visible = true;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState =
+                CursorLockMode.Locked;
+
+            Cursor.visible = false;
+        }
+    }
+
+    void UpdateFreeCamera()
+    {
         float mouseX =
             Input.GetAxisRaw("Mouse X");
 
         float mouseY =
             Input.GetAxisRaw("Mouse Y");
-
 
         yaw +=
             mouseX *
@@ -100,38 +204,12 @@ public class ThirdPersonCamera : MonoBehaviour
                 Time.deltaTime;
         }
 
-
-        // -------------------------
-        // KEEP VALUES STABLE
-        // -------------------------
-
-        pitch = Mathf.Clamp(
-            pitch,
-            minPitch,
-            maxPitch
-        );
-
-        // Only wrap when yaw gets large.
-        // This avoids interfering with SmoothDampAngle.
-        if (yaw > 360f || yaw < -360f)
-        {
-            yaw =
-                Mathf.Repeat(
-                    yaw + 180f,
-                    360f
-                ) - 180f;
-
-            smoothYaw =
-                Mathf.Repeat(
-                    smoothYaw + 180f,
-                    360f
-                ) - 180f;
-        }
-
-
-        // -------------------------
-        // SMOOTH ROTATION
-        // -------------------------
+        pitch =
+            Mathf.Clamp(
+                pitch,
+                minPitch,
+                maxPitch
+            );
 
         smoothYaw =
             Mathf.SmoothDampAngle(
@@ -148,111 +226,59 @@ public class ThirdPersonCamera : MonoBehaviour
                 ref pitchVelocity,
                 rotationSmoothTime
             );
+    }
 
+    void UpdateLockOnCamera()
+{
+    Transform enemy = lockOn.LockOnPoint;
 
-        Quaternion cameraRotation =
-            Quaternion.Euler(
-                smoothPitch,
-                smoothYaw,
-                0f
-            );
+    if (enemy == null)
+        return;
 
+    // Point at the enemy's upper body.
+    Vector3 enemyPosition = enemy.position;
 
-        // -------------------------
-        // CAMERA PIVOT
-        // -------------------------
+    // Direction from player toward enemy.
+    Vector3 direction =
+        enemyPosition -
+        smoothPivotPosition;
 
-        Vector3 desiredPivotPosition =
-            target.position +
-            Vector3.up * height;
+    if (direction.sqrMagnitude < 0.01f)
+        return;
 
-        smoothPivotPosition =
-            Vector3.SmoothDamp(
-                smoothPivotPosition,
-                desiredPivotPosition,
-                ref pivotVelocity,
-                followSmoothTime
-            );
+    Quaternion lookRotation =
+        Quaternion.LookRotation(direction);
 
+    float targetYaw =
+        lookRotation.eulerAngles.y;
 
-        // -------------------------
-        // CAMERA POSITION
-        // -------------------------
+    float targetPitch =
+        NormalizeAngle(
+            lookRotation.eulerAngles.x
+        );
 
-        Vector3 desiredPosition =
-            smoothPivotPosition -
-            cameraRotation *
-            Vector3.forward *
-            distance;
+    targetPitch =
+        Mathf.Clamp(
+            targetPitch,
+            minPitch,
+            maxPitch
+        );
 
+    // Stay locked directly onto the enemy.
+    smoothYaw = targetYaw;
+    smoothPitch = targetPitch;
 
-        // -------------------------
-        // CAMERA COLLISION
-        // -------------------------
+    // Keep free-camera values synchronized.
+    // This prevents snapping when we unlock.
+    yaw = smoothYaw;
+    pitch = smoothPitch;
+}
 
-        Vector3 direction =
-            desiredPosition -
-            smoothPivotPosition;
+    float NormalizeAngle(float angle)
+    {
+        if (angle > 180f)
+            angle -= 360f;
 
-        float desiredDistance =
-            direction.magnitude;
-
-        if (desiredDistance > 0.001f)
-        {
-            direction.Normalize();
-
-            RaycastHit hit;
-
-            if (Physics.SphereCast(
-                smoothPivotPosition,
-                collisionRadius,
-                direction,
-                out hit,
-                desiredDistance,
-                collisionMask,
-                QueryTriggerInteraction.Ignore))
-            {
-                desiredPosition =
-                    smoothPivotPosition +
-                    direction *
-                    Mathf.Max(
-                        hit.distance -
-                        collisionOffset,
-                        0.1f
-                    );
-            }
-        }
-
-
-        // -------------------------
-        // APPLY CAMERA
-        // -------------------------
-
-        transform.position =
-            desiredPosition;
-
-        transform.rotation =
-            cameraRotation;
-
-
-        // -------------------------
-        // CURSOR
-        // -------------------------
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState =
-                CursorLockMode.None;
-
-            Cursor.visible = true;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState =
-                CursorLockMode.Locked;
-
-            Cursor.visible = false;
-        }
+        return angle;
     }
 }
