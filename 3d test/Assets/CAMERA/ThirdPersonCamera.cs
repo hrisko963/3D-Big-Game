@@ -166,14 +166,10 @@ public class ThirdPersonCamera : MonoBehaviour
 
             Cursor.visible = true;
         }
+PlayerHealth playerHealth =
+    target.GetComponent<PlayerHealth>();
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState =
-                CursorLockMode.Locked;
 
-            Cursor.visible = false;
-        }
     }
 
     void UpdateFreeCamera()

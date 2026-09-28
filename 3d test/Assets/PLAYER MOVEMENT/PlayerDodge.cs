@@ -9,6 +9,9 @@ public class PlayerDodge : MonoBehaviour
     public Transform cameraTransform;
     public PlayerMovement playerMovement;
     public PlayerLockOn lockOn;
+    
+    [Header("Stamina")]
+public PlayerStamina stamina;
 
     [Header("Dodge")]
     public KeyCode dodgeKey = KeyCode.LeftAlt;
@@ -40,6 +43,9 @@ public class PlayerDodge : MonoBehaviour
 
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
+
+            if (stamina == null)
+    stamina = GetComponent<PlayerStamina>();
     }
 
     void Update()
@@ -51,7 +57,20 @@ public class PlayerDodge : MonoBehaviour
             return;
 
         if (Input.GetKeyDown(dodgeKey))
-            StartDodge();
+{
+    if (stamina == null)
+    {
+        StartDodge();
+    }
+    else if (stamina.UseDodgeStamina())
+    {
+        StartDodge();
+    }
+    else
+    {
+        stamina.ShowNotEnoughStamina();
+    }
+}
     }
 
     void StartDodge()

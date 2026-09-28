@@ -1,0 +1,2658 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e63f7102cca3c469dd38d934763347, type: 3}
+  m_Name: MxMAnimData
+  m_EditorClassIdentifier: MxM.Runtime::MxM.MxMAnimData
+  StartPoseId: 25
+  PoseInterval: 0.1
+  PosePredictionTimes:
+  - -0.6
+  - -0.3
+  - 0.1
+  - 0.3
+  - 0.6
+  - 1
+  Clips:
+  - {fileID: -203655887218126122, guid: 30113a535f38723408895a125196cc7c, type: 3}
+  - {fileID: -203655887218126122, guid: 2a1e8f81dbe2aa143ab0390f23445ab4, type: 3}
+  - {fileID: -203655887218126122, guid: 6a6b4859bc3388e4597d75226e87a3e5, type: 3}
+  - {fileID: -203655887218126122, guid: 24d6c72ff84736041a20be2488b43021, type: 3}
+  MatchBones: 0500000006000000110000001200000000000000
+  MatchBonesGeneric:
+  - 
+  - 
+  - 
+  - 
+  - 
+  Poses:
+  - PoseId: 0
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.000000037252903
+    NextPoseId: 1
+    LastPoseId: 9
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.08909629, y: 0.22406256, z: -0.16089122}
+      Velocity: {x: -0.075371265, y: -1.0661709, z: 3.0758393}
+    - Position: {x: -0.0058553275, y: 0.08769351, z: 0.003266316}
+      Velocity: {x: 0.0144815445, y: 0.024468899, z: -1.669084}
+    - Position: {x: -0.26507795, y: 0.9029925, z: 0.08047579}
+      Velocity: {x: 0.05528629, y: -0.34653187, z: -1.4877968}
+    - Position: {x: 0.25194645, y: 0.88085145, z: -0.060708527}
+      Velocity: {x: 0.023151636, y: 0.16905665, z: 1.9883306}
+    - Position: {x: -0.0061379056, y: 1.0167966, z: 0.013260763}
+      Velocity: {x: -0.07083684, y: 0.040471554, z: -0.060260963}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 1
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.10000004
+    NextPoseId: 2
+    LastPoseId: 0
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.093660235, y: 0.12775421, z: 0.15863621}
+      Velocity: {x: 0.0782086, y: -0.115579374, z: 2.9809282}
+    - Position: {x: -0.002830538, y: 0.08924562, z: -0.16516398}
+      Velocity: {x: -0.01651278, y: 0.06740571, z: -1.6336513}
+    - Position: {x: -0.26387328, y: 0.8752488, z: -0.061749578}
+      Velocity: {x: 0.08640648, y: -0.22214891, z: -1.3916427}
+    - Position: {x: 0.24783888, y: 0.9012815, z: 0.122013025}
+      Velocity: {x: -0.2491528, y: 0.15682818, z: 1.1953348}
+    - Position: {x: -0.0136547955, y: 1.012717, z: 0.00962636}
+      Velocity: {x: -0.07484084, y: -0.25290492, z: 0.050601743}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 2
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.20000003
+    NextPoseId: 3
+    LastPoseId: 1
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.086678654, y: 0.13046509, z: 0.38573727}
+      Velocity: {x: 0.008911342, y: -0.3374994, z: -0.28255868}
+    - Position: {x: -0.0035005547, y: 0.101864755, z: -0.32276484}
+      Velocity: {x: 0.08031514, y: 0.42650226, z: -1.2076402}
+    - Position: {x: -0.25709257, y: 0.85688865, z: -0.18355462}
+      Velocity: {x: 0.12510957, y: 0.043265823, z: -0.63680226}
+    - Position: {x: 0.21555181, y: 0.9158806, z: 0.22780482}
+      Velocity: {x: -0.31302008, y: 0.22241713, z: 0.7432108}
+    - Position: {x: -0.02291255, y: 0.9838077, z: 0.023142667}
+      Velocity: {x: -0.114996925, y: -0.19460918, z: 0.13189907}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 3
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.30000004
+    NextPoseId: 4
+    LastPoseId: 2
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.07397094, y: 0.091647506, z: 0.3155965}
+      Velocity: {x: 0.0124901505, y: -0.14754412, z: -1.43905}
+    - Position: {x: 0.013362903, y: 0.16628689, z: -0.40864688}
+      Velocity: {x: 0.3472664, y: 1.159229, z: 0.3432036}
+    - Position: {x: -0.2531189, y: 0.8619187, z: -0.21018003}
+      Velocity: {x: -0.24139696, y: -0.007841585, z: 0.743173}
+    - Position: {x: 0.18950962, y: 0.9420072, z: 0.28836855}
+      Velocity: {x: -0.24385297, y: 0.26212448, z: 0.00258042}
+    - Position: {x: -0.035506655, y: 0.9774669, z: 0.04209591}
+      Velocity: {x: -0.19131969, y: 0.19971724, z: 0.15601988}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 4
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.40000007
+    NextPoseId: 5
+    LastPoseId: 3
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.07334176, y: 0.082582116, z: 0.15825763}
+      Velocity: {x: -0.024705822, y: 0.068761095, z: -1.6991706}
+    - Position: {x: 0.03616313, y: 0.2520615, z: -0.31271607}
+      Velocity: {x: -0.054912776, y: -0.41281453, z: 2.258028}
+    - Position: {x: -0.2790973, y: 0.8626452, z: -0.116313145}
+      Velocity: {x: -0.14895257, y: 0.05877255, z: 1.3869615}
+    - Position: {x: 0.17230722, y: 0.95684737, z: 0.25856808}
+      Velocity: {x: 0.1256859, y: -0.273143, z: -0.9756961}
+    - Position: {x: -0.05194869, y: 1.0001689, z: 0.045913443}
+      Velocity: {x: -0.016781311, y: 0.23377413, z: -0.17180477}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 5
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.50000006
+    NextPoseId: 6
+    LastPoseId: 4
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.07508859, y: 0.09103942, z: -0.010463661}
+      Velocity: {x: -0.015931126, y: 0.047529925, z: -1.6571765}
+    - Position: {x: 0.038932495, y: 0.18126482, z: -0.055302672}
+      Velocity: {x: 0.07099195, y: -0.8491753, z: 3.8738167}
+    - Position: {x: -0.290591, y: 0.8759476, z: 0.030544728}
+      Velocity: {x: -0.16092773, y: 0.38925758, z: 1.5791464}
+    - Position: {x: 0.19321513, y: 0.92453265, z: 0.15285312}
+      Velocity: {x: 0.29172236, y: -0.4897021, z: -1.364534}
+    - Position: {x: -0.05037216, y: 1.0193692, z: 0.030596437}
+      Velocity: {x: 0.09343756, y: 0.010645387, z: -0.07945727}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 6
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.6000001
+    NextPoseId: 7
+    LastPoseId: 5
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.07757063, y: 0.096190155, z: -0.17478687}
+      Velocity: {x: 0.0034020834, y: 0.09908316, z: -1.5945001}
+    - Position: {x: 0.03658528, y: 0.1390118, z: 0.33839008}
+      Velocity: {x: -0.23250745, y: 0.1456618, z: 1.6642574}
+    - Position: {x: -0.30191192, y: 0.91912615, z: 0.17872846}
+      Velocity: {x: 0.035323493, y: 0.55348384, z: 1.1691813}
+    - Position: {x: 0.21513695, y: 0.87373537, z: -0.00022915751}
+      Velocity: {x: -0.024236733, y: -0.34169546, z: -1.8027208}
+    - Position: {x: -0.04007873, y: 1.0110543, z: 0.02568965}
+      Velocity: {x: 0.115881756, y: -0.38635603, z: 0.11352676}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 7
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.7000001
+    NextPoseId: 8
+    LastPoseId: 6
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.077815786, y: 0.116769314, z: -0.32116616}
+      Velocity: {x: -0.17541404, y: 0.56937206, z: -0.8311531}
+    - Position: {x: 0.0131316725, y: 0.12527788, z: 0.38479903}
+      Velocity: {x: -0.16338736, y: -0.4897176, z: -1.2236246}
+    - Position: {x: -0.30127612, y: 0.9705084, z: 0.26771092}
+      Velocity: {x: -0.008883474, y: 0.3328561, z: 0.11314045}
+    - Position: {x: 0.20275559, y: 0.85280657, z: -0.16591091}
+      Velocity: {x: -0.26272976, y: 0.089982726, z: -0.7665339}
+    - Position: {x: -0.029042503, y: 0.9767236, z: 0.034740444}
+      Velocity: {x: 0.13485879, y: -0.013399121, z: 0.12227076}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 8
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.80000013
+    NextPoseId: 9
+    LastPoseId: 7
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.091646284, y: 0.20264536, z: -0.3752271}
+      Velocity: {x: -0.053492475, y: 1.1743186, z: 0.80148214}
+    - Position: {x: -0.0029124338, y: 0.08790076, z: 0.25955033}
+      Velocity: {x: 0.027741149, y: -0.011880395, z: -1.7372913}
+    - Position: {x: -0.29508504, y: 0.9947223, z: 0.25694743}
+      Velocity: {x: 0.23789042, y: -0.27504557, z: -0.8016029}
+    - Position: {x: 0.19204216, y: 0.86329854, z: -0.20403767}
+      Velocity: {x: 0.3723832, y: 0.04435538, z: 0.5795592}
+    - Position: {x: -0.0139702875, y: 0.9825228, z: 0.046757407}
+      Velocity: {x: 0.14134757, y: 0.20748372, z: -0.08455484}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 9
+    AnimId: 0
+    TracksId: 0
+    PrimaryClipId: 0
+    Time: 0.90000015
+    NextPoseId: 0
+    LastPoseId: 8
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.08411552, y: 0.26123518, z: -0.26453024}
+      Velocity: {x: -0.0996123, y: -0.7434557, z: 2.072686}
+    - Position: {x: -0.005085022, y: 0.08866465, z: 0.08870603}
+      Velocity: {x: -0.015402451, y: -0.019426342, z: -1.7088953}
+    - Position: {x: -0.27268142, y: 0.94351876, z: 0.15325788}
+      Velocity: {x: 0.15206692, y: -0.8105276, z: -1.4557464}
+    - Position: {x: 0.23675106, y: 0.86979645, z: -0.125676}
+      Velocity: {x: 0.3039118, y: 0.22110099, z: 1.2992532}
+    - Position: {x: -0.004606084, y: 1.0064039, z: 0.02757372}
+      Velocity: {x: -0.03063665, y: 0.20785327, z: -0.28635886}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 10
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.000000037252903
+    NextPoseId: 11
+    LastPoseId: 15
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.07504112, y: 0.2905271, z: -0.14373024}
+      Velocity: {x: 0.76258284, y: -2.0315635, z: 4.033696}
+    - Position: {x: -0.0034292797, y: 0.06927544, z: -0.2822121}
+      Velocity: {x: 0.16709483, y: 0.07111311, z: -3.8059006}
+    - Position: {x: -0.31388006, y: 0.7699132, z: -0.16301003}
+      Velocity: {x: 0.36797047, y: 1.5278256, z: -0.64875233}
+    - Position: {x: 0.076440126, y: 0.91322654, z: 0.34206113}
+      Velocity: {x: 0.039199144, y: 3.3204424, z: 0.21175934}
+    - Position: {x: -0.0102778105, y: 0.8516731, z: -0.059106864}
+      Velocity: {x: 0.14574343, y: 0.37965775, z: -0.050864086}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 11
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.10000004
+    NextPoseId: 12
+    LastPoseId: 10
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: 0.02237478, y: 0.11044395, z: 0.21094328}
+      Velocity: {x: 0.32741404, y: -1.4934207, z: -0.72687024}
+    - Position: {x: 0.0023754854, y: 0.1377309, z: -0.6360334}
+      Velocity: {x: -0.24436677, y: 3.3767679, z: -0.3129803}
+    - Position: {x: -0.28132787, y: 0.8565173, z: -0.154027}
+      Velocity: {x: 0.4929048, y: -1.471187, z: 1.4852113}
+    - Position: {x: 0.07951599, y: 1.0666667, z: 0.33566055}
+      Velocity: {x: 0.89619076, y: -4.292422, z: -0.96822494}
+    - Position: {x: 0.008021684, y: 0.8776995, z: -0.060191903}
+      Velocity: {x: 0.12679715, y: -0.0951171, z: 0.002700748}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 12
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.20000003
+    NextPoseId: 13
+    LastPoseId: 11
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: 0.047716916, y: 0.023605883, z: -0.047999784}
+      Velocity: {x: -0.009320603, y: 0.00067591673, z: -4.7909503}
+    - Position: {x: 0.040973514, y: 0.4253971, z: -0.46627802}
+      Velocity: {x: 0.8949051, y: -0.40601555, z: 3.9650588}
+    - Position: {x: -0.17097196, y: 0.70952386, z: 0.06519082}
+      Velocity: {x: 2.11142, y: 1.2184228, z: 2.9536562}
+    - Position: {x: 0.22298612, y: 0.6890517, z: 0.089882076}
+      Velocity: {x: 0.9398184, y: 0.22757293, z: -3.7515938}
+    - Position: {x: 0.013238743, y: 0.83973944, z: -0.07217318}
+      Velocity: {x: -0.028734209, y: -0.25220874, z: -0.5267141}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 13
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.30000004
+    NextPoseId: 14
+    LastPoseId: 12
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: 0.041250654, y: 0.039459467, z: -0.50346553}
+      Velocity: {x: -0.45829967, y: 1.3289925, z: -2.353565}
+    - Position: {x: 0.08907151, y: 0.2955014, z: -0.076175496}
+      Velocity: {x: -0.8936246, y: -2.5337713, z: 4.4048004}
+    - Position: {x: -0.024392165, y: 0.93036723, z: 0.29103124}
+      Velocity: {x: 0.016614344, y: 1.8723292, z: -0.5763898}
+    - Position: {x: 0.25787142, y: 0.77335215, z: -0.1644546}
+      Velocity: {x: -0.47687072, y: 0.89080906, z: 0.16943553}
+    - Position: {x: 0.010674943, y: 0.8482652, z: -0.09251243}
+      Velocity: {x: -0.11834951, y: 0.43473354, z: 0.2091066}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 14
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.40000007
+    NextPoseId: 15
+    LastPoseId: 13
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: 0.016013574, y: 0.24787617, z: -0.6687996}
+      Velocity: {x: -0.4069064, y: 2.3374922, z: 2.2019396}
+    - Position: {x: 0.012531011, y: 0.07085478, z: 0.2552539}
+      Velocity: {x: -0.51681805, y: -1.1433814, z: -2.5379322}
+    - Position: {x: -0.045918696, y: 0.9488206, z: 0.21816927}
+      Velocity: {x: -1.9528568, y: -3.2849627, z: -2.294771}
+    - Position: {x: 0.22566438, y: 0.80777943, z: -0.09797536}
+      Velocity: {x: -0.6697939, y: -1.063591, z: 2.3145125}
+    - Position: {x: -0.00016006175, y: 0.88952816, z: -0.054892715}
+      Velocity: {x: -0.11405865, y: -0.33128372, z: 0.14893907}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 15
+    AnimId: 1
+    TracksId: 1
+    PrimaryClipId: 1
+    Time: 0.50000006
+    NextPoseId: 10
+    LastPoseId: 14
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0.0001}
+    JointsData:
+    - Position: {x: -0.04975358, y: 0.37571037, z: -0.35529298}
+      Velocity: {x: -0.5057524, y: -1.7036709, z: 4.231159}
+    - Position: {x: -0.009440944, y: 0.043444514, z: -0.0817942}
+      Velocity: {x: 0.12023266, y: 0.5166184, z: -4.008461}
+    - Position: {x: -0.2591357, y: 0.70548266, z: -0.05883389}
+      Velocity: {x: -1.0948852, y: 1.2886175, z: -2.0836244}
+    - Position: {x: 0.12750489, y: 0.7606791, z: 0.2052099}
+      Velocity: {x: -1.021295, y: 3.0509512, z: 2.7369242}
+    - Position: {x: -0.0089202, y: 0.84313583, z: -0.058360536}
+      Velocity: {x: -0.027151233, y: 0.170747, z: -0.015027234}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 16
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0
+    NextPoseId: 17
+    LastPoseId: 16
+    Favour: 1
+    LocalVelocity: {x: -0.11380043, y: 0, z: 3.6568236}
+    JointsData:
+    - Position: {x: -0.021570932, y: 0.36021936, z: -0.17388505}
+      Velocity: {x: -0.5550604, y: -2.361672, z: 7.3477244}
+    - Position: {x: 0.05998846, y: 0.10823107, z: -0.15019062}
+      Velocity: {x: 0.071684904, y: 0.121780634, z: -2.2017527}
+    - Position: {x: -0.2182443, y: 1.0078466, z: 0.0039752796}
+      Velocity: {x: -0.37058952, y: -0.6401038, z: -1.4288921}
+    - Position: {x: 0.22391923, y: 0.93133396, z: 0.15368041}
+      Velocity: {x: -0.5107448, y: -0.7336843, z: -0.24351001}
+    - Position: {x: -0.0016588215, y: 0.94478893, z: 0.018112049}
+      Velocity: {x: -0.016740896, y: -0.45603156, z: -0.40503693}
+    Trajectory:
+    - Position: {x: 0.051865365, y: 0, z: -2.0974364}
+      FacingAngle: 0
+    - Position: {x: 0.025932683, y: 0, z: -1.0487182}
+      FacingAngle: 0
+    - Position: {x: -0.008644227, y: 0, z: 0.34957272}
+      FacingAngle: 0
+    - Position: {x: -0.0076574963, y: 0, z: 0.80281997}
+      FacingAngle: 0
+    - Position: {x: 0.0080206115, y: 0, z: 0.8681307}
+      FacingAngle: 0
+    - Position: {x: 0.025051244, y: 0, z: 0.77182317}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 17
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.1
+    NextPoseId: 18
+    LastPoseId: 16
+    Favour: 1
+    LocalVelocity: {x: -0.047787573, y: 0, z: 3.1489553}
+    JointsData:
+    - Position: {x: -0.0701444, y: 0.2188915, z: 0.45135763}
+      Velocity: {x: 0.08827343, y: -1.7929517, z: 1.1539335}
+    - Position: {x: 0.06634593, y: 0.15018779, z: -0.32556733}
+      Velocity: {x: 0.0064589083, y: 0.41106817, z: 0.40062547}
+    - Position: {x: -0.25659302, y: 0.9443065, z: -0.10677585}
+      Velocity: {x: -0.4461549, y: -1.4696883, z: 0.27562618}
+    - Position: {x: 0.19927406, y: 0.85346794, z: 0.12319288}
+      Velocity: {x: 0.5072759, y: -1.7211996, z: -0.5767791}
+    - Position: {x: -0.008260082, y: 0.881959, z: -0.017617613}
+      Velocity: {x: -0.19403896, y: -1.4734005, z: -0.27107716}
+    Trajectory:
+    - Position: {x: 0.05186536, y: 0, z: -2.0974362}
+      FacingAngle: 0
+    - Position: {x: 0.025932683, y: 0, z: -1.0487182}
+      FacingAngle: 0
+    - Position: {x: 0.0001465939, y: 0, z: 0.29167995}
+      FacingAngle: 0
+    - Position: {x: 0.0072959475, y: 0, z: 0.5168364}
+      FacingAngle: 0
+    - Position: {x: 0.019463174, y: 0, z: 0.49932435}
+      FacingAngle: 0
+    - Position: {x: 0.038611494, y: 0, z: 0.39464}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 18
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.2
+    NextPoseId: 19
+    LastPoseId: 17
+    Favour: 1
+    LocalVelocity: {x: 0.035277795, y: 0, z: 1.8819739}
+    JointsData:
+    - Position: {x: -0.066950545, y: 0.085933864, z: 0.45010734}
+      Velocity: {x: -0.027879965, y: -0.018671753, z: -1.8398429}
+    - Position: {x: 0.06370643, y: 0.17210555, z: -0.2591605}
+      Velocity: {x: 0.07164051, y: -0.0029838088, z: 0.30448973}
+    - Position: {x: -0.29578802, y: 0.7662798, z: -0.048408926}
+      Velocity: {x: 0.4586248, y: -1.2900735, z: 1.2659086}
+    - Position: {x: 0.25036857, y: 0.68817234, z: 0.07759023}
+      Velocity: {x: -0.0640427, y: -0.62742, z: 0.04758954}
+    - Position: {x: -0.031401668, y: 0.74750423, z: -0.05124092}
+      Velocity: {x: -0.11218299, y: -0.25676253, z: -0.22600889}
+    Trajectory:
+    - Position: {x: 0.043074545, y: 0, z: -2.0395436}
+      FacingAngle: 0
+    - Position: {x: 0.01714186, y: 0, z: -0.9908254}
+      FacingAngle: 0
+    - Position: {x: 0.0008401368, y: 0, z: 0.16156733}
+      FacingAngle: 0
+    - Position: {x: 0.01394576, y: 0, z: 0.23448128}
+      FacingAngle: 0
+    - Position: {x: 0.024786111, y: 0, z: 0.18139893}
+      FacingAngle: 0
+    - Position: {x: 0.043380927, y: 0, z: 0.07534957}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 19
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.3
+    NextPoseId: 20
+    LastPoseId: 18
+    Favour: 1
+    LocalVelocity: {x: 0.049288597, y: 0, z: 0.80504996}
+    JointsData:
+    - Position: {x: -0.068049386, y: 0.08655965, z: 0.29028893}
+      Velocity: {x: -0.034325898, y: 0.03374576, z: -0.73043925}
+    - Position: {x: 0.07406591, y: 0.17066711, z: -0.25433487}
+      Velocity: {x: 0.018785555, y: -0.086137034, z: -0.51968086}
+    - Position: {x: -0.2548453, y: 0.70211565, z: 0.06501454}
+      Velocity: {x: -0.070646726, y: 0.50329554, z: 0.27835363}
+    - Position: {x: 0.25808105, y: 0.6532354, z: 0.07760984}
+      Velocity: {x: 0.36835718, y: 0.5109154, z: -0.11156201}
+    - Position: {x: -0.038234144, y: 0.7502883, z: -0.069455266}
+      Velocity: {x: 0.007520873, y: 0.71009976, z: 0.03399968}
+    Trajectory:
+    - Position: {x: 0.03359018, y: 0, z: -1.8515382}
+      FacingAngle: 0
+    - Position: {x: 0.030688884, y: 0, z: -0.7489219}
+      FacingAngle: 0
+    - Position: {x: 0.006309217, y: 0, z: 0.063589156}
+      FacingAngle: 0
+    - Position: {x: 0.015678108, y: 0, z: 0.06531072}
+      FacingAngle: 0
+    - Position: {x: 0.027792718, y: 0, z: -0.0033863187}
+      FacingAngle: 0
+    - Position: {x: 0.04745681, y: 0, z: -0.11382818}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 20
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.40000004
+    NextPoseId: 21
+    LastPoseId: 19
+    Favour: 1
+    LocalVelocity: {x: 0.072541706, y: 0, z: 0.16526575}
+    JointsData:
+    - Position: {x: -0.07368864, y: 0.08701253, z: 0.23248166}
+      Velocity: {x: -0.076467715, y: -0.03965019, z: -0.24066085}
+    - Position: {x: 0.07204418, y: 0.16155505, z: -0.30843008}
+      Velocity: {x: -0.15209086, y: -0.1947319, z: -0.32586148}
+    - Position: {x: -0.2791952, y: 0.76632875, z: 0.079751074}
+      Velocity: {x: -0.4636232, y: 0.91230965, z: 0.014374256}
+    - Position: {x: 0.29397005, y: 0.7224844, z: 0.0709303}
+      Velocity: {x: 0.33992592, y: 1.0365114, z: 0.009442568}
+    - Position: {x: -0.036208015, y: 0.82834876, z: -0.06113863}
+      Velocity: {x: 0.06428281, y: 0.8720861, z: 0.20767327}
+    Trajectory:
+    - Position: {x: 0.018636731, y: 0, z: -1.5655545}
+      FacingAngle: 0
+    - Position: {x: -0.0072959475, y: 0, z: -0.5168364}
+      FacingAngle: 0
+    - Position: {x: 0.0067964084, y: 0, z: 0.009324789}
+      FacingAngle: 0
+    - Position: {x: 0.0121672265, y: 0, z: -0.017512083}
+      FacingAngle: 0
+    - Position: {x: 0.026399523, y: 0, z: -0.094585955}
+      FacingAngle: 0
+    - Position: {x: 0.046063624, y: 0, z: -0.20502788}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 21
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.50000006
+    NextPoseId: 22
+    LastPoseId: 20
+    Favour: 1
+    LocalVelocity: {x: 0.036440484, y: 0, z: -0.05096792}
+    JointsData:
+    - Position: {x: -0.08041354, y: 0.08511019, z: 0.21675712}
+      Velocity: {x: -0.027963364, y: -0.0020408626, z: 0.015321966}
+    - Position: {x: 0.05827236, y: 0.13741618, z: -0.33260018}
+      Velocity: {x: -0.1485413, y: -0.35657158, z: 0.058056697}
+    - Position: {x: -0.31422657, y: 0.85110885, z: 0.093913496}
+      Velocity: {x: -0.109194495, y: 0.58610666, z: 0.44264784}
+    - Position: {x: 0.3278403, y: 0.8214184, z: 0.068979025}
+      Velocity: {x: 0.3017508, y: 0.7737897, z: -0.11739847}
+    - Position: {x: -0.029499272, y: 0.908579, z: -0.03754282}
+      Velocity: {x: 0.092524715, y: 0.54121244, z: 0.2835142}
+    Trajectory:
+    - Position: {x: 0.003196097, y: 0, z: -1.2253065}
+      FacingAngle: 0
+    - Position: {x: -0.01394576, y: 0, z: -0.23448122}
+      FacingAngle: 0
+    - Position: {x: 0.0025724852, y: 0, z: -0.007603228}
+      FacingAngle: 0
+    - Position: {x: 0.010840353, y: 0, z: -0.053082347}
+      FacingAngle: 0
+    - Position: {x: 0.024519147, y: 0, z: -0.13152122}
+      FacingAngle: 0
+    - Position: {x: 0.04418324, y: 0, z: -0.24196315}
+      FacingAngle: 0
+    Tags: 0
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 22
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.6000001
+    NextPoseId: 23
+    LastPoseId: 21
+    Favour: 1
+    LocalVelocity: {x: 0.0126230875, y: 0, z: -0.17063732}
+    JointsData:
+    - Position: {x: -0.08416277, y: 0.08390564, z: 0.21977413}
+      Velocity: {x: -0.0144696385, y: 0.03657698, z: 0.1710021}
+    - Position: {x: 0.044360563, y: 0.10376179, z: -0.322142}
+      Velocity: {x: -0.06999377, y: -0.23529643, z: 0.21570379}
+    - Position: {x: -0.3210701, y: 0.90301234, z: 0.14151162}
+      Velocity: {x: 0.18183821, y: 0.1858377, z: 0.6510435}
+    - Position: {x: 0.35736674, y: 0.89364374, z: 0.054516196}
+      Velocity: {x: 0.18553251, y: 0.44334042, z: -0.3890919}
+    - Position: {x: -0.019141985, y: 0.9576398, z: -0.009494245}
+      Velocity: {x: 0.100232616, y: 0.2746498, z: 0.2825188}
+    Trajectory:
+    - Position: {x: -0.008020619, y: 0, z: -0.8681305}
+      FacingAngle: 0
+    - Position: {x: -0.015678104, y: 0, z: -0.06531066}
+      FacingAngle: 0
+    - Position: {x: 0.0027983394, y: 0, z: -0.019233644}
+      FacingAngle: 0
+    - Position: {x: 0.012114612, y: 0, z: -0.068697035}
+      FacingAngle: 0
+    - Position: {x: 0.02686268, y: 0, z: -0.15152848}
+      FacingAngle: 0
+    - Position: {x: 0.046526782, y: 0, z: -0.2619704}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 23
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.7000001
+    NextPoseId: 24
+    LastPoseId: 22
+    Favour: 1
+    LocalVelocity: {x: 0.05523155, y: 0, z: -0.25298828}
+    JointsData:
+    - Position: {x: -0.08736402, y: 0.08620417, z: 0.24101883}
+      Velocity: {x: -0.059132375, y: -0.0036215773, z: 0.28022283}
+    - Position: {x: 0.035733476, y: 0.08396441, z: -0.29437548}
+      Velocity: {x: -0.080201454, y: -0.026322598, z: 0.31946295}
+    - Position: {x: -0.30259475, y: 0.9133058, z: 0.19548047}
+      Velocity: {x: 0.15815482, y: -0.12786147, z: 0.2045786}
+    - Position: {x: 0.3632494, y: 0.9200405, z: -0.0012049079}
+      Velocity: {x: -0.2598942, y: -0.13372657, z: -0.91596586}
+    - Position: {x: -0.011943432, y: 0.97693825, z: 0.013811588}
+      Velocity: {x: 0.016687848, y: -0.009249447, z: 0.13428804}
+    Trajectory:
+    - Position: {x: -0.019463176, y: 0, z: -0.49932408}
+      FacingAngle: 0
+    - Position: {x: -0.012167219, y: 0, z: 0.017512083}
+      FacingAngle: 0
+    - Position: {x: 0.005469537, y: 0, z: -0.026245534}
+      FacingAngle: 0
+    - Position: {x: 0.014232304, y: 0, z: -0.07707387}
+      FacingAngle: 0
+    - Position: {x: 0.02898038, y: 0, z: -0.15990537}
+      FacingAngle: 0
+    - Position: {x: 0.04864447, y: 0, z: -0.27034724}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 24
+    AnimId: 2
+    TracksId: 2
+    PrimaryClipId: 2
+    Time: 0.80000013
+    NextPoseId: 24
+    LastPoseId: 23
+    Favour: 1
+    LocalVelocity: {x: 0.044161405, y: 0, z: -0.2802884}
+    JointsData:
+    - Position: {x: -0.092735, y: 0.08746129, z: 0.27063626}
+      Velocity: {x: -0.03153953, y: 0.0098204585, z: 0.25538796}
+    - Position: {x: 0.029475741, y: 0.08352566, z: -0.26490176}
+      Velocity: {x: -0.014493946, y: 0.056600556, z: 0.19709048}
+    - Position: {x: -0.2854733, y: 0.89889586, z: 0.2151131}
+      Velocity: {x: 0.22003075, y: -0.17839308, z: 0.19066927}
+    - Position: {x: 0.33014524, y: 0.90475607, z: -0.09451771}
+      Velocity: {x: -0.5349799, y: -0.17948146, z: -0.8758531}
+    - Position: {x: -0.010342917, y: 0.9749578, z: 0.026676714}
+      Velocity: {x: 0.022643168, y: -0.035184614, z: 0.12159346}
+    Trajectory:
+    - Position: {x: -0.024786107, y: 0, z: -0.18139875}
+      FacingAngle: 0
+    - Position: {x: -0.010840346, y: 0, z: 0.053082347}
+      FacingAngle: 0
+    - Position: {x: 0.00384675, y: 0, z: -0.023217916}
+      FacingAngle: 0
+    - Position: {x: 0.0136787975, y: 0, z: -0.07843888}
+      FacingAngle: 0
+    - Position: {x: 0.028426867, y: 0, z: -0.16127032}
+      FacingAngle: 0
+    - Position: {x: 0.04809097, y: 0, z: -0.27171227}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 3
+  - PoseId: 25
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0
+    NextPoseId: 26
+    LastPoseId: 25
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19537157, y: 0.08769637, z: 0.17807269}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.1538327, y: 0.087340474, z: -0.25147593}
+      Velocity: {x: 1.538327, y: 0.87340474, z: -2.5147593}
+    - Position: {x: -0.32207617, y: 0.88021135, z: 0.034888625}
+      Velocity: {x: -3.2207618, y: 8.802114, z: 0.34888625}
+    - Position: {x: 0.34745514, y: 0.88529295, z: -0.0907917}
+      Velocity: {x: 3.4745514, y: 8.852929, z: -0.907917}
+    - Position: {x: -0.001023316, y: 0.9691228, z: -0.01619196}
+      Velocity: {x: -0.01023316, y: 9.691228, z: -0.1619196}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 26
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.1
+    NextPoseId: 27
+    LastPoseId: 25
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19501512, y: 0.0878067, z: 0.17771447}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15404187, y: 0.08677989, z: -0.25158727}
+      Velocity: {x: 0.002091676, y: -0.005605817, z: -0.0011134148}
+    - Position: {x: -0.32023597, y: 0.8796756, z: 0.038975537}
+      Velocity: {x: 0.01840204, y: -0.0053572655, z: 0.040869117}
+    - Position: {x: 0.3472748, y: 0.8848667, z: -0.09496379}
+      Velocity: {x: -0.0018033385, y: -0.004262328, z: -0.041720867}
+    - Position: {x: -0.0011750965, y: 0.96900296, z: -0.016267538}
+      Velocity: {x: -0.0015178043, y: -0.0011986494, z: -0.0007557869}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 27
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.2
+    NextPoseId: 28
+    LastPoseId: 26
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19452262, y: 0.08822149, z: 0.17731977}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15439114, y: 0.08525747, z: -0.25172877}
+      Velocity: {x: 0.0034926832, y: -0.015224218, z: -0.0014150143}
+    - Position: {x: -0.31729886, y: 0.8785263, z: 0.045250475}
+      Velocity: {x: 0.029371083, y: -0.011493564, z: 0.062749386}
+    - Position: {x: 0.34707555, y: 0.8842504, z: -0.10183716}
+      Velocity: {x: -0.0019925833, y: -0.0061631203, z: -0.06873369}
+    - Position: {x: -0.001363598, y: 0.96846926, z: -0.016281545}
+      Velocity: {x: -0.0018850155, y: -0.005337, z: -0.00014007092}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 28
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.3
+    NextPoseId: 29
+    LastPoseId: 27
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19507696, y: 0.08888948, z: 0.17733717}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15420796, y: 0.08299661, z: -0.25157425}
+      Velocity: {x: -0.0018317997, y: -0.022608638, z: 0.0015452504}
+    - Position: {x: -0.31299224, y: 0.8761865, z: 0.050991118}
+      Velocity: {x: 0.043066144, y: -0.023397803, z: 0.057406425}
+    - Position: {x: 0.34718832, y: 0.8830634, z: -0.10902202}
+      Velocity: {x: 0.0011277199, y: -0.011870265, z: -0.07184863}
+    - Position: {x: -0.0013829854, y: 0.9676283, z: -0.015915692}
+      Velocity: {x: -0.00019387342, y: -0.008409619, z: 0.003658533}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 29
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.4
+    NextPoseId: 30
+    LastPoseId: 28
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19598569, y: 0.08929181, z: 0.17797446}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15391222, y: 0.080786705, z: -0.25159544}
+      Velocity: {x: -0.0029574335, y: -0.022099018, z: -0.00021189451}
+    - Position: {x: -0.3100822, y: 0.8733543, z: 0.054204345}
+      Velocity: {x: 0.029100478, y: -0.028321743, z: 0.032132268}
+    - Position: {x: 0.34533584, y: 0.8803106, z: -0.115737915}
+      Velocity: {x: -0.018524826, y: -0.02752781, z: -0.06715894}
+    - Position: {x: -0.0013035799, y: 0.96651906, z: -0.015143275}
+      Velocity: {x: 0.00079405494, y: -0.011092424, z: 0.007724166}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 30
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.5
+    NextPoseId: 31
+    LastPoseId: 29
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19567369, y: 0.0885244, z: 0.17836511}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15435044, y: 0.079695046, z: -0.25108626}
+      Velocity: {x: 0.0043822825, y: -0.010916591, z: 0.005091727}
+    - Position: {x: -0.30753106, y: 0.8724608, z: 0.060963035}
+      Velocity: {x: 0.025511384, y: -0.008935332, z: 0.0675869}
+    - Position: {x: 0.3435309, y: 0.8778903, z: -0.119081795}
+      Velocity: {x: -0.018049479, y: -0.024203062, z: -0.0334388}
+    - Position: {x: -0.0011562465, y: 0.9649645, z: -0.014356434}
+      Velocity: {x: 0.0014733337, y: -0.015545487, z: 0.007868409}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 31
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.6
+    NextPoseId: 32
+    LastPoseId: 30
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19567299, y: 0.087199986, z: 0.1788075}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15360425, y: 0.07984352, z: -0.2516263}
+      Velocity: {x: -0.0074619055, y: 0.0014847517, z: -0.005400479}
+    - Position: {x: -0.30582905, y: 0.8742348, z: 0.061936498}
+      Velocity: {x: 0.017020106, y: 0.01774013, z: 0.009734631}
+    - Position: {x: 0.3437954, y: 0.8754736, z: -0.113960385}
+      Velocity: {x: 0.002644956, y: -0.024166703, z: 0.0512141}
+    - Position: {x: -0.00075545977, y: 0.96311474, z: -0.0128362775}
+      Velocity: {x: 0.0040078675, y: -0.018497705, z: 0.015201569}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 32
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.70000005
+    NextPoseId: 33
+    LastPoseId: 31
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19655772, y: 0.0854156, z: 0.1785202}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15598921, y: 0.08260751, z: -0.25964516}
+      Velocity: {x: 0.023849607, y: 0.027639866, z: -0.08018851}
+    - Position: {x: -0.30830574, y: 0.8790921, z: 0.0433079}
+      Velocity: {x: -0.024766922, y: 0.048573017, z: -0.18628597}
+    - Position: {x: 0.34574375, y: 0.8713062, z: -0.08631945}
+      Velocity: {x: 0.019483566, y: -0.041674376, z: 0.2764094}
+    - Position: {x: -0.0004892822, y: 0.96094966, z: -0.010180831}
+      Velocity: {x: 0.0026617758, y: -0.021650791, z: 0.026554465}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 33
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.8000001
+    NextPoseId: 34
+    LastPoseId: 32
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19648539, y: 0.08454186, z: 0.17787129}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.16473131, y: 0.08748704, z: -0.27706262}
+      Velocity: {x: 0.08742094, y: 0.048795342, z: -0.1741746}
+    - Position: {x: -0.31574094, y: 0.8814155, z: -0.003965318}
+      Velocity: {x: -0.074352026, y: 0.02323389, z: -0.4727322}
+    - Position: {x: 0.34609595, y: 0.8674923, z: -0.031229854}
+      Velocity: {x: 0.0035220385, y: -0.038138628, z: 0.5508959}
+    - Position: {x: -0.002997618, y: 0.9581338, z: -0.0073548555}
+      Velocity: {x: -0.025083357, y: -0.028158426, z: 0.028259754}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 34
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 0.9000001
+    NextPoseId: 35
+    LastPoseId: 33
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19656081, y: 0.0859313, z: 0.17756462}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.17716496, y: 0.093038976, z: -0.29057798}
+      Velocity: {x: 0.12433648, y: 0.055519342, z: -0.13515353}
+    - Position: {x: -0.31366083, y: 0.88497496, z: -0.075221956}
+      Velocity: {x: 0.020801127, y: 0.0355947, z: -0.7125664}
+    - Position: {x: 0.33662856, y: 0.8662357, z: 0.045838}
+      Velocity: {x: -0.09467393, y: -0.012566447, z: 0.7706785}
+    - Position: {x: -0.007891221, y: 0.9545905, z: -0.003922701}
+      Velocity: {x: -0.048936028, y: -0.035433173, z: 0.034321547}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 35
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.0000001
+    NextPoseId: 36
+    LastPoseId: 34
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19601017, y: 0.08904117, z: 0.17624885}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.18601239, y: 0.099347115, z: -0.29759246}
+      Velocity: {x: 0.0884743, y: 0.06308138, z: -0.07014483}
+    - Position: {x: -0.2881501, y: 0.89083457, z: -0.15148282}
+      Velocity: {x: 0.25510728, y: 0.058596134, z: -0.76260865}
+    - Position: {x: 0.31289417, y: 0.8673132, z: 0.1300332}
+      Velocity: {x: -0.2373439, y: 0.010775328, z: 0.84195197}
+    - Position: {x: -0.012470601, y: 0.9507069, z: -0.0015322566}
+      Velocity: {x: -0.0457938, y: -0.038836002, z: 0.023904443}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 36
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.1000001
+    NextPoseId: 37
+    LastPoseId: 35
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19711253, y: 0.0920406, z: 0.18038237}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.19690225, y: 0.103495896, z: -0.30223843}
+      Velocity: {x: 0.10889858, y: 0.041487813, z: -0.046459734}
+    - Position: {x: -0.24285373, y: 0.89467317, z: -0.21741247}
+      Velocity: {x: 0.4529637, y: 0.038385987, z: -0.6592965}
+    - Position: {x: 0.26539332, y: 0.8670119, z: 0.20963305}
+      Velocity: {x: -0.4750085, y: -0.0030130148, z: 0.7959986}
+    - Position: {x: -0.015409164, y: 0.9469513, z: -0.0012093782}
+      Velocity: {x: -0.02938563, y: -0.037555695, z: 0.0032287836}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 37
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.2000002
+    NextPoseId: 38
+    LastPoseId: 36
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19847214, y: 0.09311497, z: 0.17965901}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.20297751, y: 0.105600595, z: -0.30251533}
+      Velocity: {x: 0.06075263, y: 0.021046996, z: -0.0027689338}
+    - Position: {x: -0.18858305, y: 0.8863791, z: -0.26025453}
+      Velocity: {x: 0.54270685, y: -0.08294046, z: -0.4284206}
+    - Position: {x: 0.19936353, y: 0.8639351, z: 0.26705718}
+      Velocity: {x: -0.6602979, y: -0.030767918, z: 0.5742413}
+    - Position: {x: -0.014695965, y: 0.94524527, z: -0.0014538169}
+      Velocity: {x: 0.007131994, y: -0.017060637, z: -0.0024443865}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 38
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.3000002
+    NextPoseId: 39
+    LastPoseId: 37
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.197005, y: 0.091468215, z: 0.17899168}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.20823883, y: 0.106263876, z: -0.30433846}
+      Velocity: {x: 0.05261317, y: 0.006632805, z: -0.018231273}
+    - Position: {x: -0.16627721, y: 0.8743202, z: -0.27428007}
+      Velocity: {x: 0.22305831, y: -0.12058914, z: -0.14025539}
+    - Position: {x: 0.16589037, y: 0.86074305, z: 0.28101385}
+      Velocity: {x: -0.33473164, y: -0.03192067, z: 0.13956666}
+    - Position: {x: -0.010342285, y: 0.9452314, z: -0.0009787083}
+      Velocity: {x: 0.043536797, y: -0.00013887882, z: 0.0047510862}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 39
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.4000002
+    NextPoseId: 40
+    LastPoseId: 38
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19817168, y: 0.09189463, z: 0.17989731}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.20893642, y: 0.10441661, z: -0.3055733}
+      Velocity: {x: 0.0069759786, y: -0.018472672, z: -0.012348592}
+    - Position: {x: -0.1796582, y: 0.868342, z: -0.2673605}
+      Velocity: {x: -0.1338099, y: -0.059782267, z: 0.06919563}
+    - Position: {x: 0.18219112, y: 0.8581704, z: 0.26343167}
+      Velocity: {x: 0.16300753, y: -0.025726557, z: -0.17582178}
+    - Position: {x: -0.005671585, y: 0.9461211, z: -0.0004143119}
+      Velocity: {x: 0.046707, y: 0.008897185, z: 0.005643964}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 40
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.5000002
+    NextPoseId: 41
+    LastPoseId: 39
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19840312, y: 0.09155065, z: 0.17895699}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.2085068, y: 0.102564454, z: -0.30635273}
+      Velocity: {x: -0.004296303, y: -0.018521547, z: -0.0077942014}
+    - Position: {x: -0.20975964, y: 0.86825454, z: -0.24322623}
+      Velocity: {x: -0.30101433, y: -0.00087440014, z: 0.24134278}
+    - Position: {x: 0.22331174, y: 0.85757554, z: 0.22809595}
+      Velocity: {x: 0.4112062, y: -0.0059485435, z: -0.3533572}
+    - Position: {x: -0.0010178459, y: 0.9480147, z: -0.0023201108}
+      Velocity: {x: 0.046537388, y: 0.0189358, z: -0.01905799}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 41
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.6000003
+    NextPoseId: 42
+    LastPoseId: 40
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19653557, y: 0.088293016, z: 0.17711008}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.20745057, y: 0.10233599, z: -0.30570185}
+      Velocity: {x: -0.010562241, y: -0.002284646, z: 0.006508827}
+    - Position: {x: -0.25162616, y: 0.8766309, z: -0.20860577}
+      Velocity: {x: -0.41866526, y: 0.0837636, z: 0.34620464}
+    - Position: {x: 0.26121807, y: 0.8592254, z: 0.17683822}
+      Velocity: {x: 0.37906334, y: 0.016498566, z: -0.5125773}
+    - Position: {x: 0.0017712372, y: 0.9502569, z: -0.0058737397}
+      Velocity: {x: 0.027890831, y: 0.022422075, z: -0.03553629}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 42
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.7000003
+    NextPoseId: 43
+    LastPoseId: 41
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19638358, y: 0.08673477, z: 0.17718911}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.20524849, y: 0.09880698, z: -0.30569094}
+      Velocity: {x: -0.022020787, y: -0.035290122, z: 0.0001090765}
+    - Position: {x: -0.29997316, y: 0.8955203, z: -0.15844011}
+      Velocity: {x: -0.48346996, y: 0.18889427, z: 0.50165653}
+    - Position: {x: 0.29108346, y: 0.8632161, z: 0.12094045}
+      Velocity: {x: 0.29865384, y: 0.039907098, z: -0.5589777}
+    - Position: {x: 0.0031748896, y: 0.95253205, z: -0.00905031}
+      Velocity: {x: 0.014036523, y: 0.022751689, z: -0.0317657}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 43
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.8000003
+    NextPoseId: 44
+    LastPoseId: 42
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19615464, y: 0.08564502, z: 0.17622834}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.2018369, y: 0.0967738, z: -0.30437338}
+      Velocity: {x: -0.03411591, y: -0.02033174, z: 0.013175607}
+    - Position: {x: -0.33954498, y: 0.90930706, z: -0.07793319}
+      Velocity: {x: -0.39571822, y: 0.13786733, z: 0.8050692}
+    - Position: {x: 0.3140442, y: 0.8673384, z: 0.057463586}
+      Velocity: {x: 0.22960752, y: 0.04122317, z: -0.6347686}
+    - Position: {x: 0.0048309173, y: 0.9554723, z: -0.010857463}
+      Velocity: {x: 0.016560277, y: 0.029402375, z: -0.018071532}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 44
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 1.9000003
+    NextPoseId: 45
+    LastPoseId: 43
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19592685, y: 0.08314246, z: 0.17587143}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.19710286, y: 0.09574789, z: -0.30236763}
+      Velocity: {x: -0.047340393, y: -0.010259151, z: 0.020057559}
+    - Position: {x: -0.34786576, y: 0.9131545, z: 0.023834407}
+      Velocity: {x: -0.083207786, y: 0.038474202, z: 1.017676}
+    - Position: {x: 0.31858212, y: 0.8778188, z: -0.02725637}
+      Velocity: {x: 0.045379102, y: 0.10480404, z: -0.84719956}
+    - Position: {x: 0.0068069184, y: 0.9591311, z: -0.011553109}
+      Velocity: {x: 0.01976001, y: 0.03658831, z: -0.006956458}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 45
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.0000002
+    NextPoseId: 46
+    LastPoseId: 44
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19653682, y: 0.08131111, z: 0.17662543}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.18630919, y: 0.09332287, z: -0.2976338}
+      Velocity: {x: -0.10793671, y: -0.02425015, z: 0.047338307}
+    - Position: {x: -0.30388895, y: 0.908452, z: 0.12230182}
+      Velocity: {x: 0.43976814, y: -0.047025084, z: 0.9846741}
+    - Position: {x: 0.30185297, y: 0.89396787, z: -0.1401}
+      Velocity: {x: -0.16729146, y: 0.16149044, z: -1.1284363}
+    - Position: {x: 0.009759617, y: 0.96291625, z: -0.011942625}
+      Velocity: {x: 0.029526986, y: 0.037851334, z: -0.0038951635}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 46
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.1000001
+    NextPoseId: 47
+    LastPoseId: 45
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19591004, y: 0.082543135, z: 0.17687237}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.17380652, y: 0.08812833, z: -0.28729266}
+      Velocity: {x: -0.1250267, y: -0.051945448, z: 0.10341138}
+    - Position: {x: -0.24336933, y: 0.9121147, z: 0.20190424}
+      Velocity: {x: 0.6051962, y: 0.036627054, z: 0.7960242}
+    - Position: {x: 0.24482667, y: 0.91549915, z: -0.2567541}
+      Velocity: {x: -0.57026297, y: 0.21531284, z: -1.166541}
+    - Position: {x: 0.013085166, y: 0.9662181, z: -0.011969864}
+      Velocity: {x: 0.033255488, y: 0.03301859, z: -0.00027239323}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 47
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.2
+    NextPoseId: 48
+    LastPoseId: 46
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19470638, y: 0.08390021, z: 0.17885256}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.16224904, y: 0.085382044, z: -0.27347356}
+      Velocity: {x: -0.11557475, y: -0.02746284, z: 0.13819098}
+    - Position: {x: -0.18467519, y: 0.92222047, z: 0.2730726}
+      Velocity: {x: 0.58694136, y: 0.10105789, z: 0.71168363}
+    - Position: {x: 0.16289964, y: 0.93334126, z: -0.34066585}
+      Velocity: {x: -0.8192703, y: 0.17842114, z: -0.83911747}
+    - Position: {x: 0.015756482, y: 0.96909213, z: -0.010994256}
+      Velocity: {x: 0.026713163, y: 0.028740168, z: 0.009756088}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 48
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.3
+    NextPoseId: 49
+    LastPoseId: 47
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19610731, y: 0.08337057, z: 0.1756804}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15864101, y: 0.084266126, z: -0.26090252}
+      Velocity: {x: -0.03608033, y: -0.011159182, z: 0.12571037}
+    - Position: {x: -0.12557049, y: 0.933118, z: 0.33019626}
+      Velocity: {x: 0.5910469, y: 0.10897517, z: 0.5712366}
+    - Position: {x: 0.07350766, y: 0.9457191, z: -0.38842225}
+      Velocity: {x: -0.8939198, y: 0.12377858, z: -0.47756404}
+    - Position: {x: 0.016833315, y: 0.97172123, z: -0.008636951}
+      Velocity: {x: 0.010768324, y: 0.026291013, z: 0.023573041}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 49
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.3999999
+    NextPoseId: 50
+    LastPoseId: 48
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19517647, y: 0.08386731, z: 0.1774149}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15384772, y: 0.08351773, z: -0.25124687}
+      Velocity: {x: -0.047932863, y: -0.007483959, z: 0.096556544}
+    - Position: {x: -0.06683458, y: 0.9450633, z: 0.36631536}
+      Velocity: {x: 0.58735913, y: 0.11945307, z: 0.36119103}
+    - Position: {x: 0.003283957, y: 0.953116, z: -0.4068452}
+      Velocity: {x: -0.702237, y: 0.07396877, z: -0.18422961}
+    - Position: {x: 0.015639061, y: 0.9739885, z: -0.0058090687}
+      Velocity: {x: -0.011942536, y: 0.022672415, z: 0.028278828}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 50
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.4999998
+    NextPoseId: 51
+    LastPoseId: 49
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19496822, y: 0.08472979, z: 0.17769122}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15296073, y: 0.08382976, z: -0.24876273}
+      Velocity: {x: -0.008869916, y: 0.0031203032, z: 0.024841428}
+    - Position: {x: -0.029270679, y: 0.9552721, z: 0.38341987}
+      Velocity: {x: 0.37563896, y: 0.102087855, z: 0.17104506}
+    - Position: {x: -0.03625472, y: 0.9542623, z: -0.41082817}
+      Velocity: {x: -0.39538673, y: 0.011463165, z: -0.03982961}
+    - Position: {x: 0.014171064, y: 0.9757896, z: -0.0030994415}
+      Velocity: {x: -0.014679972, y: 0.018011332, z: 0.027096272}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 51
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.5999997
+    NextPoseId: 52
+    LastPoseId: 50
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19465292, y: 0.085877836, z: 0.17712724}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.1536777, y: 0.08550149, z: -0.24887073}
+      Velocity: {x: 0.0071696937, y: 0.016717315, z: -0.0010800362}
+    - Position: {x: -0.016977508, y: 0.96252656, z: 0.39416444}
+      Velocity: {x: 0.12293171, y: 0.07254481, z: 0.10744572}
+    - Position: {x: -0.03526509, y: 0.94771415, z: -0.40624183}
+      Velocity: {x: 0.009896271, y: -0.06548166, z: 0.04586339}
+    - Position: {x: 0.013840344, y: 0.9770988, z: -0.0007146597}
+      Velocity: {x: -0.003307201, y: 0.01309216, z: 0.023847818}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 52
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.6999996
+    NextPoseId: 53
+    LastPoseId: 51
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19676808, y: 0.08753294, z: 0.17670447}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15423726, y: 0.087703705, z: -0.24763995}
+      Velocity: {x: 0.005595535, y: 0.022022128, z: 0.012307763}
+    - Position: {x: -0.03266932, y: 0.9660295, z: 0.39760375}
+      Velocity: {x: -0.15691812, y: 0.03502965, z: 0.034393072}
+    - Position: {x: 0.0037755352, y: 0.9365394, z: -0.39281455}
+      Velocity: {x: 0.39040625, y: -0.111747384, z: 0.13427287}
+    - Position: {x: 0.015381394, y: 0.97784823, z: 0.001631856}
+      Velocity: {x: 0.0154105015, y: 0.007494092, z: 0.023465157}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 53
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.7999995
+    NextPoseId: 54
+    LastPoseId: 52
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19634782, y: 0.087643504, z: 0.17786288}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15288916, y: 0.08899605, z: -0.2489332}
+      Velocity: {x: -0.0134809315, y: 0.012923479, z: -0.01293242}
+    - Position: {x: -0.06506311, y: 0.9651856, z: 0.38827872}
+      Velocity: {x: -0.3239379, y: -0.008439422, z: -0.093250275}
+    - Position: {x: 0.071543105, y: 0.92634934, z: -0.36751813}
+      Velocity: {x: 0.67767566, y: -0.1019007, z: 0.2529642}
+    - Position: {x: 0.017882472, y: 0.9778294, z: 0.0033897758}
+      Velocity: {x: 0.02501078, y: -0.00018835068, z: 0.017579198}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 54
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.8999994
+    NextPoseId: 55
+    LastPoseId: 53
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19484118, y: 0.086571455, z: 0.17806149}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15312573, y: 0.088983774, z: -0.25053334}
+      Velocity: {x: 0.0023657084, y: -0.00012278557, z: -0.016001463}
+    - Position: {x: -0.11292957, y: 0.95958555, z: 0.3587433}
+      Velocity: {x: -0.47866455, y: -0.056000352, z: -0.29535413}
+    - Position: {x: 0.14945826, y: 0.9186647, z: -0.3331205}
+      Velocity: {x: 0.77915156, y: -0.07684648, z: 0.34397632}
+    - Position: {x: 0.020263704, y: 0.97738063, z: 0.0020225644}
+      Velocity: {x: 0.023812316, y: -0.0044876337, z: -0.013672113}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 55
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 2.9999993
+    NextPoseId: 56
+    LastPoseId: 54
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19524668, y: 0.086319625, z: 0.17860651}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15222451, y: 0.0885548, z: -0.25069094}
+      Velocity: {x: -0.009012222, y: -0.0042897463, z: -0.0015759468}
+    - Position: {x: -0.17124382, y: 0.9474412, z: 0.30376232}
+      Velocity: {x: -0.58314246, y: -0.12144327, z: -0.54980993}
+    - Position: {x: 0.23366544, y: 0.91239226, z: -0.28406206}
+      Velocity: {x: 0.8420718, y: -0.06272435, z: 0.49058437}
+    - Position: {x: 0.020737467, y: 0.97690797, z: -0.00061655045}
+      Velocity: {x: 0.004737638, y: -0.0047266483, z: -0.026391149}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 56
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.0999992
+    NextPoseId: 57
+    LastPoseId: 55
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19383362, y: 0.085781336, z: 0.1779784}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.1525779, y: 0.08888, z: -0.25182185}
+      Velocity: {x: 0.0035339594, y: 0.0032520294, z: -0.011309087}
+    - Position: {x: -0.21398231, y: 0.93341506, z: 0.23508829}
+      Velocity: {x: -0.42738497, y: -0.14026165, z: -0.6867403}
+    - Position: {x: 0.3049119, y: 0.9061454, z: -0.21800202}
+      Velocity: {x: 0.71246475, y: -0.062468648, z: 0.66060036}
+    - Position: {x: 0.01964556, y: 0.97621953, z: -0.0026410818}
+      Velocity: {x: -0.010919068, y: -0.0068843365, z: -0.020245314}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 57
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.199999
+    NextPoseId: 58
+    LastPoseId: 56
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19513106, y: 0.08624363, z: 0.17774874}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15229347, y: 0.08872926, z: -0.25033945}
+      Velocity: {x: -0.0028443336, y: -0.0015074015, z: 0.014823973}
+    - Position: {x: -0.2543923, y: 0.91742027, z: 0.15761703}
+      Velocity: {x: -0.40409982, y: -0.15994787, z: -0.77471256}
+    - Position: {x: 0.34830257, y: 0.9007287, z: -0.15008837}
+      Velocity: {x: 0.4339066, y: -0.054166913, z: 0.6791365}
+    - Position: {x: 0.016893588, y: 0.9750813, z: -0.003569007}
+      Velocity: {x: -0.027519725, y: -0.011382103, z: -0.009279251}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 58
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.299999
+    NextPoseId: 59
+    LastPoseId: 57
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.195995, y: 0.08674604, z: 0.17755753}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15312839, y: 0.08888739, z: -0.25042075}
+      Velocity: {x: 0.008349121, y: 0.0015813112, z: -0.00081300735}
+    - Position: {x: -0.27768523, y: 0.90191203, z: 0.08514124}
+      Velocity: {x: -0.23292929, y: -0.15508235, z: -0.7247579}
+    - Position: {x: 0.36966017, y: 0.89641434, z: -0.091747165}
+      Velocity: {x: 0.21357596, y: -0.04314363, z: 0.58341205}
+    - Position: {x: 0.013814008, y: 0.97386616, z: -0.004699111}
+      Velocity: {x: -0.030795801, y: -0.012151599, z: -0.011301041}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 59
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.399999
+    NextPoseId: 60
+    LastPoseId: 58
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19625062, y: 0.08795315, z: 0.17732096}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15289427, y: 0.08838403, z: -0.2501946}
+      Velocity: {x: -0.0023411214, y: -0.0050336123, z: 0.0022614002}
+    - Position: {x: -0.2894683, y: 0.889381, z: 0.043071687}
+      Velocity: {x: -0.117830634, y: -0.12531042, z: -0.42069554}
+    - Position: {x: 0.37278044, y: 0.89228, z: -0.06988126}
+      Velocity: {x: 0.031202734, y: -0.04134357, z: 0.21865904}
+    - Position: {x: 0.011142992, y: 0.97289455, z: -0.006831467}
+      Velocity: {x: -0.026710154, y: -0.009716153, z: -0.021323562}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 60
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.4999988
+    NextPoseId: 61
+    LastPoseId: 59
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19559507, y: 0.088884234, z: 0.17838454}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15276058, y: 0.08763367, z: -0.25008693}
+      Velocity: {x: -0.0013369322, y: -0.0075036287, z: 0.0010767579}
+    - Position: {x: -0.2967856, y: 0.8842036, z: 0.029040515}
+      Velocity: {x: -0.073173046, y: -0.051773787, z: -0.14031172}
+    - Position: {x: 0.36750057, y: 0.88936687, z: -0.06753564}
+      Velocity: {x: -0.05279869, y: -0.029131174, z: 0.023456216}
+    - Position: {x: 0.0084761195, y: 0.97194093, z: -0.008984208}
+      Velocity: {x: -0.02666873, y: -0.009536147, z: -0.02152741}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 61
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.5999987
+    NextPoseId: 62
+    LastPoseId: 60
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19540578, y: 0.08900893, z: 0.17924476}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15275413, y: 0.086791754, z: -0.24950546}
+      Velocity: {x: -0.00006452203, y: -0.008419156, z: 0.005814731}
+    - Position: {x: -0.30297643, y: 0.8833536, z: 0.026746273}
+      Velocity: {x: -0.061908364, y: -0.008500218, z: -0.022942424}
+    - Position: {x: 0.36192328, y: 0.8866212, z: -0.072963536}
+      Velocity: {x: -0.05577296, y: -0.02745688, z: -0.05427897}
+    - Position: {x: 0.0054869354, y: 0.9710443, z: -0.010530889}
+      Velocity: {x: -0.029891841, y: -0.008966327, z: -0.015466809}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 62
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.6999986
+    NextPoseId: 63
+    LastPoseId: 61
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19552942, y: 0.088772535, z: 0.17843759}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15329094, y: 0.08665049, z: -0.24978465}
+      Velocity: {x: 0.0053681433, y: -0.0014126301, z: -0.0027918816}
+    - Position: {x: -0.3101202, y: 0.88345194, z: 0.027191877}
+      Velocity: {x: -0.07143766, y: 0.0009834766, z: 0.0044560432}
+    - Position: {x: 0.35405555, y: 0.8832404, z: -0.07887584}
+      Velocity: {x: -0.07867724, y: -0.033807755, z: -0.05912304}
+    - Position: {x: 0.0032159882, y: 0.9702618, z: -0.011921346}
+      Velocity: {x: -0.022709472, y: -0.007824898, z: -0.0139045715}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  - PoseId: 63
+    AnimId: 3
+    TracksId: -1
+    PrimaryClipId: 3
+    Time: 3.7999985
+    NextPoseId: 63
+    LastPoseId: 62
+    Favour: 1
+    LocalVelocity: {x: 0, y: 0, z: 0}
+    JointsData:
+    - Position: {x: -0.19505806, y: 0.088048816, z: 0.17847192}
+      Velocity: {x: 0, y: 0, z: 0}
+    - Position: {x: 0.15357193, y: 0.087156534, z: -0.25070032}
+      Velocity: {x: 0.002809912, y: 0.0050604343, z: -0.009156764}
+    - Position: {x: -0.31573984, y: 0.88215584, z: 0.030903876}
+      Velocity: {x: -0.05619645, y: -0.01296103, z: 0.037119985}
+    - Position: {x: 0.34819984, y: 0.8831326, z: -0.08312869}
+      Velocity: {x: -0.058557093, y: -0.001078248, z: -0.04252851}
+    - Position: {x: 0.0012939719, y: 0.9696533, z: -0.013345242}
+      Velocity: {x: -0.019220162, y: -0.006085038, z: -0.014238954}
+    Trajectory:
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    - Position: {x: 0, y: 0, z: 0}
+      FacingAngle: 0
+    Tags: 1073741824
+    FavourTags: 0
+    GenericTags: 0
+    UserTags: 0
+    AnimType: 1
+  Events: []
+  CalibrationSets:
+  - CalibrationName: Calibration 0
+    PoseTrajectoryRatio: 0.6
+    PoseVelocityWeight: 3
+    PoseAspectMultiplier: 1
+    PoseResultantVelocityMultiplier: 0.2
+    TrajPosMultiplier: 5
+    TrajFAngleMultiplier: 0.04
+    JointPositionWeights:
+    - 3
+    - 3
+    - 3
+    - 3
+    - 3
+    JointVelocityWeights:
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+  IdleSets:
+  - Tags: 0
+    PrimaryClipId: 3
+    TransitionClipIds: 
+    SecondaryClipIds: 
+    PrimaryPoseIds: 190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f000000
+    TransitionPoseIds: 
+    SecondaryPoseIds: 
+    MinLoops: 1
+    MaxLoops: 2
+    Traits: 0
+    PlaybackSpeed: 1
+  BlendSpaces: []
+  ClipsData:
+  - StartPoseId: 0
+    EndPoseId: 9
+    ClipId: 0
+    IsLooping: 1
+    Length: 0.95000005
+    PlaybackSpeed: 1
+    CurveData:
+      Curves: []
+      CurveHandles: 
+  - StartPoseId: 10
+    EndPoseId: 15
+    ClipId: 1
+    IsLooping: 1
+    Length: 0.55
+    PlaybackSpeed: 1
+    CurveData:
+      Curves: []
+      CurveHandles: 
+  - StartPoseId: 16
+    EndPoseId: 24
+    ClipId: 2
+    IsLooping: 0
+    Length: 0.86666673
+    PlaybackSpeed: 1
+    CurveData:
+      Curves: []
+      CurveHandles: 
+  Composites: []
+  BlendClips: []
+  BlendSpaceNames: []
+  EventNames: []
+  TagNames:
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - Tag 1
+  - DoNotUse
+  - Reserved
+  FavourTagNames:
+  - Favour Tag 1
+  - Favour Tag 2
+  - Favour Tag 3
+  - Favour Tag 4
+  - Favour Tag 5
+  - Favour Tag 6
+  - Favour Tag 7
+  - Favour Tag 8
+  - Favour Tag 9
+  - Favour Tag 10
+  - Favour Tag 11
+  - Favour Tag 12
+  - Favour Tag 13
+  - Favour Tag 14
+  - Favour Tag 15
+  - Favour Tag 16
+  - Favour Tag 17
+  - Favour Tag 18
+  - Favour Tag 19
+  - Favour Tag 20
+  - Favour Tag 21
+  - Favour Tag 22
+  - Favour Tag 23
+  - Favour Tag 24
+  - Favour Tag 25
+  - Favour Tag 26
+  - Favour Tag 27
+  - Favour Tag 28
+  - Favour Tag 29
+  - Favour Tag 30
+  - Favour Tag 31
+  - Favour Tag 32
+  UserTagNames:
+  - User Tag 1
+  - User Tag 2
+  - User Tag 3
+  - User Tag 4
+  - User Tag 5
+  - User Tag 6
+  - User Tag 7
+  - User Tag 8
+  - User Tag 9
+  - User Tag 10
+  - User Tag 11
+  - User Tag 12
+  - User Tag 13
+  - User Tag 14
+  - User Tag 15
+  - User Tag 16
+  - User Tag 17
+  - User Tag 18
+  - User Tag 19
+  - User Tag 20
+  - User Tag 21
+  - User Tag 22
+  - User Tag 23
+  - User Tag 24
+  - User Tag 25
+  - User Tag 26
+  - User Tag 27
+  - User Tag 28
+  - User Tag 29
+  - User Tag 30
+  - User Tag 31
+  - User Tag 32
+  IdleTraits: []
+  LeftFootSteps:
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  RightFootSteps:
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  - TrackId: 0
+    Tags: []
+    FootSteps: []
+  CurveNames: []
+  poseMask: {fileID: 0}
+  PoseUtilisationLevel: 1
+  GetBonesByName: 0
