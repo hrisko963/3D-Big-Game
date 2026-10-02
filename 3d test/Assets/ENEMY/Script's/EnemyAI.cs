@@ -1,1628 +1,495 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
-
-
-
-
-
 
 public class EnemyAI : MonoBehaviour
-
-
-
 {
-
-
+    // ==================================================
+    // REFERENCES
+    // ==================================================
 
     [Header("References")]
-
-
-
     public Transform player;
-
-
-
     public Transform attackPoint;
-
-
-
     public Animator animator;
-
-
-
     public NavMeshAgent agent;
-
-
-
     public EnemyBlock enemyBlock;
-
-
-
-
-
-
-
-    [Tooltip("Drag the visible enemy model here.")]
-
-
-
     public Transform visualModel;
 
-
-
-
-
-
+    // ==================================================
+    // DETECTION
+    // ==================================================
 
     [Header("Detection")]
-
-
-
     public float detectionRange = 20f;
 
-
-[Header("Knockback")]
-[Tooltip("Animator trigger played when this enemy is knocked backward.")]
-public string knockbackTrigger = "Knockback";
-
-private bool isKnockedBack;
-private Coroutine knockbackCoroutine;
-
-
-
+    // ==================================================
+    // COMBAT DISTANCE
+    // ==================================================
 
     [Header("Combat Distance")]
-
-
-
     public float combatRange = 7f;
 
-
-
-
-
-
-
-    [Tooltip("Distance enemy tries to maintain from player.")]
-
-
-
     public float preferredDistance = 4f;
-
-
-
-
-
-
-
-    [Tooltip("Small dead zone around preferred distance.")]
-
-
-
     public float distanceTolerance = 0.3f;
-
-
-
-
-
-
-
-    [Tooltip("If player gets this close, enemy retreats aggressively.")]
-
-
 
     public float dangerDistance = 2.2f;
 
-
-
-
-
-
+    // ==================================================
+    // COMBAT MOVEMENT
+    // ==================================================
 
     [Header("Combat Movement")]
-
-
-
     public float combatMoveSpeed = 4f;
-
-
-
-
-
-
-
-    [Tooltip("Speed used when player gets too close.")]
-
-
-
     public float retreatSpeed = 6f;
 
-
-
-
-
-
-
-    [Tooltip("How far sideways the enemy tries to circle.")]
-
-
-
     public float circleDistance = 1.5f;
-
-
-
-
-
-
-
     public float decisionInterval = 1.5f;
 
-
-
-
-
-
-
     [Range(0f, 1f)]
-
-
-
     public float circleChance = 0.7f;
 
-
+    // ==================================================
+    // GROUP SPACING
+    // ==================================================
 
     [Header("Enemy Separation")]
+    public float enemySeparationDistance = 4f;
+    public float enemySeparationStrength = 5f;
 
-    [Tooltip("How close another enemy can get before this enemy moves away from it.")]
+    public float separationSmoothTime = 0.15f;
 
-    public float enemySeparationDistance = 2.5f;
+    public float minimumCombatMoveDistance = 0.15f;
 
+    [Tooltip(
+        "If enemies get closer than this, " +
+        "separation takes priority even while waiting."
+    )]
+    public float emergencySeparationDistance = 1.8f;
 
+    // ==================================================
+    // NAVMESH AVOIDANCE
+    // ==================================================
 
-    [Tooltip("How strongly nearby enemies push this enemy's destination away.")]
+    [Header("NavMesh Avoidance")]
 
-    public float enemySeparationStrength = 2f;
+    [Tooltip(
+        "Uses Unity NavMesh local avoidance in addition " +
+        "to the custom separation system."
+    )]
+    public bool configureAvoidanceAutomatically = true;
 
+    [Tooltip(
+        "NavMesh personal-space radius. " +
+        "This does NOT replace Enemy Separation Distance."
+    )]
+    public float avoidanceRadius = 0.6f;
 
-
-    [Tooltip("Smooths separation changes so enemies do not jerk or slide when avoiding each other.")]
-
-    public float separationSmoothTime = 0.2f;
-
-
-
-    [Tooltip("Ignore very tiny combat destination changes that can cause foot sliding.")]
-
-    public float minimumCombatMoveDistance = 0.2f;
-
-
-
-
-
-
+    // ==================================================
+    // FACING
+    // ==================================================
 
     [Header("Facing")]
 
-
-
-    [Tooltip("0 normally. Use 180 if the model faces backward.")]
-
-
-
+    [Tooltip(
+        "Normally 0. Use 180 if the model faces backward."
+    )]
     public float facingOffset = 0f;
 
-
-
-
-
-
+    // ==================================================
+    // ATTACK
+    // ==================================================
 
     [Header("Attack")]
-
-
-
     public float attackRange = 2.5f;
-
-
 
     public float attackCooldown = 1.5f;
 
-    [Tooltip("Delay after one enemy finishes attacking before another enemy can attack.")]
     public float attackHandoffDelay = 0.5f;
 
+    // ==================================================
+    // AFTER ATTACK RETREAT
+    // ==================================================
 
+    [Header("After Attack Retreat")]
 
+    [Range(0f, 1f)]
+    public float afterAttackRetreatChance = 0.35f;
 
+    public float afterAttackRetreatDistance = 2f;
 
+    public float afterAttackRetreatDuration = 0.5f;
 
+    // ==================================================
+    // DAMAGE
+    // ==================================================
 
     [Header("Attack Damage")]
-
-
-
     public float attackDamage = 10f;
-
-
 
     public float damageRadius = 1.5f;
 
-
-
     public LayerMask playerLayer;
 
-
-
-
-
-
+    // ==================================================
+    // BLOCKING
+    // ==================================================
 
     [Header("Blocking")]
-
-
-
     public float blockCheckDelay = 0.3f;
 
+    // ==================================================
+    // KNOCKBACK
+    // ==================================================
 
+    [Header("Knockback")]
+    public string knockbackTrigger = "Knockback";
 
-
-
-
+    // ==================================================
+    // PRIVATE REFERENCES
+    // ==================================================
 
     private PlayerHealth playerHealth;
-
-
-
     private PlayerLockOn playerLockOn;
 
-
-
-
-
-
+    // ==================================================
+    // STATE
+    // ==================================================
 
     private float originalSpeed;
 
-
-
-
-
-
-
     private float nextAttackTime;
-
-
-
     private float nextBlockCheckTime;
-
-
-
     private float nextCombatDecisionTime;
 
-
-
-
-
-
-
     private bool inCombatMode;
-
-
-
-
-
-
+    private bool isKnockedBack;
+    private bool isRetreatingAfterAttack;
 
     public bool IsAttacking { get; private set; }
 
-
-
-
-
-
-
     // -1 = left
-
-
-
     //  0 = hold
-
-
-
     //  1 = right
-
-
-
     private int combatDirection;
-
-
-
-
-
-
 
     private Quaternion originalVisualLocalRotation;
 
-
-
     private Vector3 smoothedSeparationOffset;
-
     private Vector3 separationSmoothVelocity;
 
-
-
-
-
-
-
-
-
-
+    private Coroutine knockbackCoroutine;
+    private Coroutine afterAttackRetreatCoroutine;
 
     // ==================================================
-
-
-
-    // START
-
-
-
+    // SHARED ENEMY LIST
     // ==================================================
 
+    private static readonly List<EnemyAI> allEnemies =
+        new List<EnemyAI>();
 
+    // ==================================================
+    // ENABLE / DISABLE
+    // ==================================================
 
-
-
-
-
-    void Start()
-
-
-
+    void OnEnable()
     {
+        if (!allEnemies.Contains(this))
+            allEnemies.Add(this);
 
-
-
-        // =========================================
-
-
-
-        // FIND PLAYER
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (player == null)
-
-
-
-        {
-
-
-
-            GameObject playerObject =
-
-
-
-                GameObject.FindGameObjectWithTag("Player");
-
-
-
-
-
-
-
-            if (playerObject != null)
-
-
-
-            {
-
-
-
-                player = playerObject.transform;
-
-
-
-            }
-
-
-
-        }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // PLAYER COMPONENTS
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (player != null)
-
-
-
-        {
-
-
-
-            playerHealth =
-
-
-
-                player.GetComponent<PlayerHealth>();
-
-
-
-
-
-
-
-            if (playerHealth == null)
-
-
-
-            {
-
-
-
-                playerHealth =
-
-
-
-                    player.GetComponentInParent<PlayerHealth>();
-
-
-
-            }
-
-
-
-
-
-
-
-            playerLockOn =
-
-
-
-                player.GetComponent<PlayerLockOn>();
-
-
-
-
-
-
-
-            if (playerLockOn == null)
-
-
-
-            {
-
-
-
-                playerLockOn =
-
-
-
-                    player.GetComponentInParent<PlayerLockOn>();
-
-
-
-            }
-
-
-
-        }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // FIND ENEMY COMPONENTS
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (animator == null)
-
-
-
-        {
-
-
-
-            animator =
-
-
-
-                GetComponentInChildren<Animator>();
-
-
-
-        }
-
-
-
-
-
-
-
-        if (agent == null)
-
-
-
-        {
-
-
-
-            agent =
-
-
-
-                GetComponentInChildren<NavMeshAgent>();
-
-
-
-        }
-
-
-
-
-
-
-
-        if (enemyBlock == null)
-
-
-
-        {
-
-
-
-            enemyBlock =
-
-
-
-                GetComponent<EnemyBlock>();
-
-
-
-        }
-
-
-
-
-
-
-
-        if (visualModel == null &&
-
-
-
-            animator != null)
-
-
-
-        {
-
-
-
-            visualModel = animator.transform;
-
-
-
-        }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // ERROR CHECKS
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (player == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: Player not assigned!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (playerHealth == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: PlayerHealth not found!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (playerLockOn == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: PlayerLockOn not found!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (animator == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: Animator not assigned!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (agent == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: NavMeshAgent not assigned!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (attackPoint == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: AttackPoint not assigned!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        if (visualModel == null)
-
-
-
-        {
-
-
-
-            Debug.LogError(
-
-
-
-                "ENEMY: Visual Model not assigned!"
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // NAVMESH SETUP
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (agent != null)
-
-
-
-        {
-
-
-
-            originalSpeed = agent.speed;
-
-
-
-
-
-
-
-            agent.updatePosition = true;
-
-
-
-            agent.updateRotation = true;
-
-
-
-        }
-
-
-
-
-
-
-
-        if (visualModel != null)
-
-
-
-        {
-
-
-
-            originalVisualLocalRotation =
-
-
-
-                visualModel.localRotation;
-
-
-
-        }
-
-
-
-
-
-
-
-        nextCombatDecisionTime =
-
-
-
-            Time.time + decisionInterval;
-
-
-
+        EnemyAttackCoordinator.Register(this);
     }
 
+    void OnDisable()
+    {
+        allEnemies.Remove(this);
 
-
-
-
-
-
-
-
-
+        EnemyAttackCoordinator.Unregister(this);
+    }
 
     // ==================================================
+    // START
+    // ==================================================
 
+    void Start()
+    {
+        FindReferences();
 
+        if (agent != null)
+        {
+            originalSpeed = agent.speed;
 
+            agent.updatePosition = true;
+            agent.updateRotation = true;
+
+            if (configureAvoidanceAutomatically)
+            {
+                agent.radius =
+                    Mathf.Max(
+                        0.1f,
+                        avoidanceRadius
+                    );
+
+                agent.obstacleAvoidanceType =
+                    ObstacleAvoidanceType
+                    .HighQualityObstacleAvoidance;
+
+                // Slightly different priorities help
+                // prevent perfectly equal agents fighting
+                // over the same movement solution.
+                int priorityVariation =
+                    Mathf.Abs(GetInstanceID()) % 11;
+
+                agent.avoidancePriority =
+                    Mathf.Clamp(
+                        45 + priorityVariation,
+                        0,
+                        99
+                    );
+            }
+        }
+
+        if (visualModel != null)
+        {
+            originalVisualLocalRotation =
+                visualModel.localRotation;
+        }
+
+        nextCombatDecisionTime =
+            Time.time + decisionInterval;
+    }
+
+    // ==================================================
+    // FIND REFERENCES
+    // ==================================================
+
+    void FindReferences()
+    {
+        if (player == null)
+        {
+            GameObject obj =
+                GameObject.FindGameObjectWithTag(
+                    "Player"
+                );
+
+            if (obj != null)
+                player = obj.transform;
+        }
+
+        if (player != null)
+        {
+            playerHealth =
+                player.GetComponent<PlayerHealth>();
+
+            if (playerHealth == null)
+            {
+                playerHealth =
+                    player.GetComponentInParent
+                    <PlayerHealth>();
+            }
+
+            playerLockOn =
+                player.GetComponent<PlayerLockOn>();
+
+            if (playerLockOn == null)
+            {
+                playerLockOn =
+                    player.GetComponentInParent
+                    <PlayerLockOn>();
+            }
+        }
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (agent == null)
+            agent = GetComponentInChildren<NavMeshAgent>();
+
+        if (enemyBlock == null)
+            enemyBlock = GetComponent<EnemyBlock>();
+
+        if (visualModel == null &&
+            animator != null)
+        {
+            visualModel = animator.transform;
+        }
+
+        if (player == null)
+            Debug.LogError(
+                "ENEMY: Player not assigned!",
+                this
+            );
+
+        if (animator == null)
+            Debug.LogError(
+                "ENEMY: Animator not assigned!",
+                this
+            );
+
+        if (agent == null)
+            Debug.LogError(
+                "ENEMY: NavMeshAgent not assigned!",
+                this
+            );
+
+        if (attackPoint == null)
+            Debug.LogError(
+                "ENEMY: AttackPoint not assigned!",
+                this
+            );
+    }
+
+    // ==================================================
     // UPDATE
-
-
-
     // ==================================================
-
-
-
-
-
-
 
     void Update()
-
-
-
     {
-
-
-
         if (player == null ||
-
-
-
             animator == null ||
-
-
-
             agent == null)
-
-
-
         {
+            return;
+        }
 
-
-
+        if (isKnockedBack)
             return;
 
-
-
-        }
-        if (isKnockedBack)
-{
-    return;
-}
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // PLAYER DEAD
-
-
-
-        // =========================================
-
-
-
-
-
-
+        if (isRetreatingAfterAttack)
+            return;
 
         if (playerHealth != null &&
-
-
-
             playerHealth.IsDead)
-
-
-
         {
-
-
-
             ExitCombatMode();
-
-
-
-
-
-
-
             StopMoving();
-
-
-
-
-
-
 
             animator.ResetTrigger("Attack");
 
-
-
-
-
-
-
             if (enemyBlock != null)
-
-
-
-            {
-
-
-
                 enemyBlock.ForceStopBlock();
 
-
-
-            }
-
-
-
-
-
-
-
             return;
-
-
-
         }
 
-
-
-
-
-
-
-        float distanceToPlayer =
-
-
-
+        float distance =
             GetFlatDistance(
-
-
-
                 agent.transform.position,
-
-
-
                 player.position
-
-
-
             );
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // OUTSIDE DETECTION RANGE
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (distanceToPlayer > detectionRange)
-
-
-
+        if (distance > detectionRange)
         {
-
-
-
             ExitCombatMode();
-
-
-
-
-
-
-
             StopMoving();
 
-
-
-
-
-
-
             if (enemyBlock != null)
-
-
-
-            {
-
-
-
                 enemyBlock.ForceStopBlock();
 
-
-
-            }
-
-
-
-
-
-
-
             return;
-
-
-
         }
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // COMBAT MODE
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (distanceToPlayer <= combatRange)
-
-
-
+        if (distance <= combatRange)
         {
-
-
-
             EnterCombatMode();
 
-
-
-
-
-
-
-            UpdateCombat(distanceToPlayer);
-
-
-
-
-
-
+            UpdateCombat(distance);
 
             return;
-
-
-
         }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // NORMAL CHASE
-
-
-
-        // =========================================
-
-
-
-
-
-
 
         ExitCombatMode();
 
-
-
-
-
-
-
         ChasePlayer();
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
-    // ENTER COMBAT MODE
-
-
-
+    // COMBAT MODE
     // ==================================================
-
-
-
-
-
-
 
     void EnterCombatMode()
-
-
-
     {
-
-
-
         if (inCombatMode)
-
-
-
-        {
-
-
-
             return;
-
-
-
-        }
-
-
-
-
-
-
 
         inCombatMode = true;
 
-
-
-
-
-
-
         agent.updateRotation = true;
-
-
-
         agent.speed = combatMoveSpeed;
-
-
-
-
-
-
 
         nextCombatDecisionTime = 0f;
 
-
-
-
-
-
-
         ChooseCombatMovement();
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // EXIT COMBAT MODE
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
     void ExitCombatMode()
-
-
-
     {
-
-
-
         if (!inCombatMode)
-
-
-
-        {
-
-
-
             return;
 
-
-
-        }
-
-
-
-
-
-
-
         inCombatMode = false;
-
-
-
         combatDirection = 0;
 
-
-
-
-
-
-
         if (agent != null)
-
-
-
         {
-
-
-
             agent.speed = originalSpeed;
-
-
-
             agent.updateRotation = true;
-
-
-
         }
-
-
-
-
-
-
 
         RestoreVisualRotation();
 
-
-
-
-
-
-
         if (enemyBlock != null &&
-
-
-
             enemyBlock.IsBlocking)
-
-
-
         {
-
-
-
             enemyBlock.StopBlocking();
-
-
-
         }
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
     // COMBAT
-
-
-
     // ==================================================
-
-
-
-
-
-
 
     void UpdateCombat(float distanceToPlayer)
-
-
-
     {
-
-
-
         if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
             return;
-
-
-
-        }
-
-
-
-
-
-
 
         FacePlayer();
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // CURRENTLY ATTACKING
-
-
-
-        // =========================================
-
-
-
-
-
-
-
+        // Current attack animation owns the enemy.
         if (IsAttacking)
-
-
-
         {
-
-
-
             StopMoving();
-
-
-
             FacePlayer();
 
-
-
             return;
-
-
-
         }
 
+        // ----------------------------------------------
+        // EMERGENCY ENEMY-TO-ENEMY SPACING
+        // ----------------------------------------------
 
+        if (IsTooCloseToAnotherEnemy())
+        {
+            SeparateFromEnemies();
 
-
-
-
+            return;
+        }
 
         float attackDistance =
-
-
-
             GetAttackDistance();
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // LOCKED-ON ENEMY ATTACKS
-
-
-
-        // =========================================
-
-
-
-
-
-
+        // ----------------------------------------------
+        // ATTACK TURN
+        // ----------------------------------------------
 
         if (attackDistance <= attackRange &&
             EnemyAttackCoordinator.CanThisEnemyAttack(
                 this,
                 player,
-                attackHandoffDelay))
+                attackHandoffDelay
+            ))
         {
             StopMoving();
             FacePlayer();
@@ -1636,2276 +503,636 @@ private Coroutine knockbackCoroutine;
             if (Time.time >= nextAttackTime)
             {
                 TryAttack();
+
                 return;
             }
 
             TryBlock();
+
             return;
         }
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // DANGER - PLAYER TOO CLOSE
-
-
-
-        // =========================================
-
-
-
-
-
-
+        // ----------------------------------------------
+        // TOO CLOSE TO PLAYER
+        // ----------------------------------------------
 
         if (distanceToPlayer <= dangerDistance)
-
-
-
         {
-
-
-
             if (enemyBlock != null &&
-
-
-
                 enemyBlock.IsBlocking)
-
-
-
             {
-
-
-
                 enemyBlock.StopBlocking();
-
-
-
             }
-
-
-
-
-
-
 
             RetreatFromPlayer();
 
-
-
             return;
-
-
-
         }
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // NON-TARGET ENEMY IN ATTACK RANGE
-
-
-
-        //
-
-
-
-        // It is NOT allowed to attack.
-
-
-
-        // It holds/circles instead.
-
-
-
-        // =========================================
-
-
-
-
-
-
+        // ----------------------------------------------
+        // IN ATTACK RANGE BUT WAITING FOR TURN
+        // ----------------------------------------------
 
         if (attackDistance <= attackRange)
-
-
-
         {
-
-
-
-            StopMoving();
-
-
-
             FacePlayer();
 
+            // Do not simply freeze if another enemy is
+            // standing too close.
+            Vector3 separation =
+                GetEnemySeparationOffset();
 
+            if (separation.sqrMagnitude > 0.05f)
+            {
+                Vector3 desiredPosition =
+                    agent.transform.position +
+                    separation;
 
-
-
-
-
-            TryBlock();
-
-
-
-
-
-
+                MoveToCombatPosition(
+                    desiredPosition,
+                    combatMoveSpeed
+                );
+            }
+            else
+            {
+                StopMoving();
+                TryBlock();
+            }
 
             return;
-
-
-
         }
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // STOP BLOCKING WHILE MOVING
-
-
-
-        // =========================================
-
-
-
-
-
-
+        // ----------------------------------------------
+        // NORMAL COMBAT MOVEMENT
+        // ----------------------------------------------
 
         if (enemyBlock != null &&
-
-
-
             enemyBlock.IsBlocking)
-
-
-
         {
-
-
-
             enemyBlock.StopBlocking();
-
-
-
         }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // TOO CLOSE
-
-
-
-        // =========================================
-
-
-
-
-
-
 
         if (distanceToPlayer <
-
-
-
-            preferredDistance -
-
-
-
-            distanceTolerance)
-
-
-
+            preferredDistance - distanceTolerance)
         {
-
-
-
             RetreatFromPlayer();
 
-
-
             return;
-
-
-
         }
-
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // TOO FAR
-
-
-
-        // =========================================
-
-
-
-
-
-
 
         if (distanceToPlayer >
-
-
-
-            preferredDistance +
-
-
-
-            distanceTolerance)
-
-
-
+            preferredDistance + distanceTolerance)
         {
-
-
-
             MoveTowardPlayer();
 
-
-
             return;
-
-
-
         }
 
-
-
-
-
-
-
-        // =========================================
-
-
-
-        // IDEAL COMBAT DISTANCE
-
-
-
-        // =========================================
-
-
-
-
-
-
-
-        if (Time.time >=
-
-
-
-            nextCombatDecisionTime)
-
-
-
+        if (Time.time >= nextCombatDecisionTime)
         {
-
-
-
             ChooseCombatMovement();
 
-
-
-
-
-
-
             nextCombatDecisionTime =
-
-
-
-                Time.time +
-
-
-
-                decisionInterval;
-
-
-
+                Time.time + decisionInterval;
         }
-
-
-
-
-
-
 
         if (combatDirection == -1)
-
-
-
         {
-
-
-
             CirclePlayer(-1);
-
-
-
         }
-
-
-
         else if (combatDirection == 1)
-
-
-
         {
-
-
-
             CirclePlayer(1);
-
-
-
         }
-
-
-
         else
-
-
-
         {
-
-
-
             HoldPosition();
-
-
-
         }
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
-    // IS PLAYER LOCKED ONTO THIS ENEMY?
-
-
-
+    // COMBAT DECISION
     // ==================================================
-
-
-
-
-
-
-
-    bool IsPlayerLockedOntoMe()
-
-
-
-    {
-
-
-
-        if (playerLockOn == null)
-
-
-
-        {
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-
-
-
-
-        if (!playerLockOn.IsLockedOn)
-
-
-
-        {
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-
-
-
-
-        Transform target =
-
-
-
-            playerLockOn.CurrentTarget;
-
-
-
-
-
-
-
-        if (target == null)
-
-
-
-        {
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-
-
-
-
-        // Get this enemy's EnemyHealth.
-
-
-
-        EnemyHealth myHealth =
-
-
-
-            GetComponent<EnemyHealth>();
-
-
-
-
-
-
-
-        if (myHealth == null)
-
-
-
-        {
-
-
-
-            myHealth =
-
-
-
-                GetComponentInParent<EnemyHealth>();
-
-
-
-        }
-
-
-
-
-
-
-
-        // Get locked target's EnemyHealth.
-
-
-
-        EnemyHealth targetHealth =
-
-
-
-            target.GetComponent<EnemyHealth>();
-
-
-
-
-
-
-
-        if (targetHealth == null)
-
-
-
-        {
-
-
-
-            targetHealth =
-
-
-
-                target.GetComponentInParent<EnemyHealth>();
-
-
-
-        }
-
-
-
-
-
-
-
-        if (myHealth == null ||
-
-
-
-            targetHealth == null)
-
-
-
-        {
-
-
-
-            return false;
-
-
-
-        }
-
-
-
-
-
-
-
-        return myHealth == targetHealth;
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // CHOOSE COMBAT MOVEMENT
-
-
-
-    // ==================================================
-
-
-
-
-
-
 
     void ChooseCombatMovement()
-
-
-
     {
-
-
-
         if (Random.value <= circleChance)
-
-
-
         {
-
-
-
             combatDirection =
-
-
-
                 Random.value < 0.5f
-
-
-
                     ? -1
-
-
-
                     : 1;
-
-
-
         }
-
-
-
         else
-
-
-
         {
-
-
-
             combatDirection = 0;
-
-
-
         }
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
     // MOVE TOWARD PLAYER
-
-
-
     // ==================================================
-
-
-
-
-
-
 
     void MoveTowardPlayer()
-
-
-
     {
-
-
-
         if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
             return;
-
-
-
-        }
-
-
-
-
-
-
-
-        Vector3 desiredPosition;
-
-
-
-
-
-
-
-        // Locked target approaches the player normally.
-
-
-
-        if (IsPlayerLockedOntoMe())
-
-
-
-        {
-
-
-
-            Vector3 direction =
-
-
-
-                agent.transform.position -
-
-
-
-                player.position;
-
-
-
-
-
-
-
-            direction.y = 0f;
-
-
-
-
-
-
-
-            if (direction.sqrMagnitude <
-
-
-
-                0.001f)
-
-
-
-            {
-
-
-
-                direction = -player.forward;
-
-
-
-            }
-
-
-
-
-
-
-
-            direction.Normalize();
-
-
-
-
-
-
-
-            desiredPosition =
-
-
-
-                player.position +
-
-
-
-                direction *
-
-
-
-                preferredDistance;
-
-
-
-        }
-
-
-
-        else
-
-
-
-        {
-
-
-
-            // Other enemies naturally use their
-
-
-
-            // current side of the player.
-
-
-
-            Vector3 direction =
-
-
-
-                agent.transform.position -
-
-
-
-                player.position;
-
-
-
-
-
-
-
-            direction.y = 0f;
-
-
-
-
-
-
-
-            if (direction.sqrMagnitude <
-
-
-
-                0.001f)
-
-
-
-            {
-
-
-
-                direction = player.forward;
-
-
-
-            }
-
-
-
-
-
-
-
-            direction.Normalize();
-
-
-
-
-
-
-
-            desiredPosition =
-
-
-
-                player.position +
-
-
-
-                direction *
-
-
-
-                preferredDistance;
-
-
-
-        }
-
-
-
-
-
-
-
-        MoveToCombatPosition(
-
-
-
-            desiredPosition,
-
-
-
-            combatMoveSpeed
-
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // RETREAT FROM PLAYER
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void RetreatFromPlayer()
-
-
-
-    {
-
-
-
-        if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        Vector3 enemyPosition =
-
-
-
-            agent.transform.position;
-
-
-
-
-
-
-
-        Vector3 awayDirection =
-
-
-
-            enemyPosition -
-
-
-
-            player.position;
-
-
-
-
-
-
-
-        awayDirection.y = 0f;
-
-
-
-
-
-
-
-        if (awayDirection.sqrMagnitude <
-
-
-
-            0.001f)
-
-
-
-        {
-
-
-
-            awayDirection =
-
-
-
-                -player.forward;
-
-
-
-        }
-
-
-
-
-
-
-
-        awayDirection.Normalize();
-
-
-
-
-
-
-
-        Vector3 desiredPosition =
-
-
-
-            enemyPosition +
-
-
-
-            awayDirection *
-
-
-
-            preferredDistance;
-
-
-
-
-
-
-
-        MoveToCombatPosition(
-
-
-
-            desiredPosition,
-
-
-
-            retreatSpeed
-
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // CIRCLE PLAYER
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void CirclePlayer(int direction)
-
-
-
-    {
-
-
-
-        if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        Vector3 fromPlayer =
-
-
-
-            agent.transform.position -
-
-
-
-            player.position;
-
-
-
-
-
-
-
-        fromPlayer.y = 0f;
-
-
-
-
-
-
-
-        if (fromPlayer.sqrMagnitude <
-
-
-
-            0.001f)
-
-
-
-        {
-
-
-
-            fromPlayer = player.forward;
-
-
-
-        }
-
-
-
-
-
-
-
-        fromPlayer.Normalize();
-
-
-
-
-
-
-
-        Vector3 tangent =
-
-
-
-            Vector3.Cross(
-
-
-
-                Vector3.up,
-
-
-
-                fromPlayer
-
-
-
-            );
-
-
-
-
-
-
-
-        tangent *= direction;
-
-
-
-
-
-
-
-        Vector3 radialPosition =
-
-
-
-            player.position +
-
-
-
-            fromPlayer *
-
-
-
-            preferredDistance;
-
-
-
-
-
-
-
-        Vector3 desiredPosition =
-
-
-
-            radialPosition +
-
-
-
-            tangent *
-
-
-
-            circleDistance;
-
-
-
-
-
-
-
-        MoveToCombatPosition(
-
-
-
-            desiredPosition,
-
-
-
-            combatMoveSpeed
-
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // MOVE TO COMBAT POSITION
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void MoveToCombatPosition(
-
-
-
-        Vector3 desiredPosition,
-
-
-
-        float moveSpeed)
-
-
-
-    {
-
-
-
-        if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-        // Smooth enemy separation so the NavMesh destination does not
-
-        // suddenly jump sideways and create visible foot sliding.
-
-        Vector3 targetSeparationOffset =
-
-            GetEnemySeparationOffset();
-
-
-
-        smoothedSeparationOffset =
-
-            Vector3.SmoothDamp(
-
-                smoothedSeparationOffset,
-
-                targetSeparationOffset,
-
-                ref separationSmoothVelocity,
-
-                separationSmoothTime
-
-            );
-
-
-
-        desiredPosition += smoothedSeparationOffset;
-
-
-
-        // Ignore tiny destination corrections. These tiny NavMesh movements
-
-        // are a common source of visible sliding while the animation is idle.
-
-        Vector3 flatDifference =
-
-            desiredPosition - agent.transform.position;
-
-
-
-        flatDifference.y = 0f;
-
-
-
-        if (flatDifference.magnitude < minimumCombatMoveDistance)
-
-        {
-
-            HoldPosition();
-
-            return;
-
-        }
-
-
-
-        NavMeshHit hit;
-
-
-
-
-
-
-
-        if (NavMesh.SamplePosition(
-
-
-
-            desiredPosition,
-
-
-
-            out hit,
-
-
-
-            2f,
-
-
-
-            NavMesh.AllAreas))
-
-
-
-        {
-
-
-
-            agent.speed = moveSpeed;
-
-
-
-            agent.isStopped = false;
-
-
-
-
-
-
-
-            agent.SetDestination(
-
-
-
-                hit.position
-
-
-
-            );
-
-
-
-
-
-
-
-            animator.SetFloat(
-
-
-
-                "Speed",
-
-
-
-                agent.velocity.magnitude,
-
-
-
-                0.1f,
-
-
-
-                Time.deltaTime
-
-
-
-            );
-
-
-
-        }
-
-
-
-        else
-
-
-
-        {
-
-
-
-            HoldPosition();
-
-
-
-        }
-
-
-
-
-
-
-
-        FacePlayer();
-
-
-
-    }
-
-
-
-    // ==================================================
-
-    // ENEMY SEPARATION
-
-    // ==================================================
-
-
-
-    Vector3 GetEnemySeparationOffset()
-
-    {
-
-        if (enemySeparationDistance <= 0f ||
-
-            enemySeparationStrength <= 0f)
-
-        {
-
-            return Vector3.zero;
-
-        }
-
-
-
-        EnemyAI[] allEnemies =
-
-            FindObjectsByType<EnemyAI>(
-
-                FindObjectsSortMode.None
-
-            );
-
-
-
-        Vector3 separation = Vector3.zero;
-
-        int nearbyCount = 0;
-
-
-
-        Vector3 myPosition =
-
-            agent != null
-
-                ? agent.transform.position
-
-                : transform.position;
-
-
-
-        foreach (EnemyAI other in allEnemies)
-
-        {
-
-            if (other == null || other == this)
-
-                continue;
-
-
-
-            Vector3 otherPosition =
-
-                other.agent != null
-
-                    ? other.agent.transform.position
-
-                    : other.transform.position;
-
-
-
-            Vector3 away = myPosition - otherPosition;
-
-            away.y = 0f;
-
-
-
-            float distance = away.magnitude;
-
-
-
-            if (distance <= 0.001f ||
-
-                distance >= enemySeparationDistance)
-
-                continue;
-
-
-
-            float strength =
-
-                1f - (distance / enemySeparationDistance);
-
-
-
-            separation += away.normalized * strength;
-
-            nearbyCount++;
-
-        }
-
-
-
-        if (nearbyCount == 0)
-
-            return Vector3.zero;
-
-
-
-        separation /= nearbyCount;
-
-
-
-        return separation * enemySeparationStrength;
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // HOLD POSITION
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void HoldPosition()
-
-
-
-    {
-
-
-
-        if (agent != null &&
-
-
-
-            agent.isOnNavMesh)
-
-
-
-        {
-
-
-
-            agent.isStopped = true;
-
-
-
-            agent.ResetPath();
-
-
-
-        }
-
-
-
-
-
-
-
-        animator.SetFloat(
-
-
-
-            "Speed",
-
-
-
-            0f,
-
-
-
-            0.1f,
-
-
-
-            Time.deltaTime
-
-
-
-        );
-
-
-
-
-
-
-
-        FacePlayer();
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // FACE PLAYER
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void FacePlayer()
-
-
-
-    {
-
-
-
-        if (visualModel == null ||
-
-
-
-            player == null)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
 
         Vector3 direction =
-
-
-
-            player.position -
-
-
-
-            visualModel.position;
-
-
-
-
-
-
+            agent.transform.position -
+            player.position;
 
         direction.y = 0f;
 
-
-
-
-
-
-
-        if (direction.sqrMagnitude <
-
-
-
-            0.001f)
-
-
-
+        if (direction.sqrMagnitude < 0.001f)
         {
-
-
-
-            return;
-
-
-
+            direction =
+                IsPlayerLockedOntoMe()
+                    ? -player.forward
+                    : player.forward;
         }
 
+        direction.Normalize();
 
+        Vector3 desiredPosition =
+            player.position +
+            direction * preferredDistance;
 
-
-
-
-
-        Quaternion targetRotation =
-
-
-
-            Quaternion.LookRotation(
-
-
-
-                direction.normalized,
-
-
-
-                Vector3.up
-
-
-
-            );
-
-
-
-
-
-
-
-        targetRotation *=
-
-
-
-            Quaternion.Euler(
-
-
-
-                0f,
-
-
-
-                facingOffset,
-
-
-
-                0f
-
-
-
-            );
-
-
-
-
-
-
-
-        visualModel.rotation =
-
-
-
-            targetRotation;
-
-
-
+        MoveToCombatPosition(
+            desiredPosition,
+            combatMoveSpeed
+        );
     }
 
-
-
-
-
-
-
-
-
-
-
+    // ==================================================
+    // RETREAT FROM PLAYER
     // ==================================================
 
-
-
-    // RESTORE VISUAL MODEL
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void RestoreVisualRotation()
-
-
-
+    void RetreatFromPlayer()
     {
-
-
-
-        if (visualModel == null)
-
-
-
-        {
-
-
-
+        if (!agent.isOnNavMesh)
             return;
 
+        Vector3 position =
+            agent.transform.position;
 
+        Vector3 away =
+            position -
+            player.position;
 
-        }
+        away.y = 0f;
 
+        if (away.sqrMagnitude < 0.001f)
+            away = -player.forward;
 
+        away.Normalize();
 
+        Vector3 desiredPosition =
+            position +
+            away * preferredDistance;
 
-
-
-
-        visualModel.localRotation =
-
-
-
-            originalVisualLocalRotation;
-
-
-
+        MoveToCombatPosition(
+            desiredPosition,
+            retreatSpeed
+        );
     }
 
-
-
-
-
-
-
-
-
-
-
+    // ==================================================
+    // CIRCLE PLAYER
     // ==================================================
 
+    void CirclePlayer(int direction)
+    {
+        if (!agent.isOnNavMesh)
+            return;
 
+        Vector3 fromPlayer =
+            agent.transform.position -
+            player.position;
 
-    // NORMAL CHASE
+        fromPlayer.y = 0f;
 
+        if (fromPlayer.sqrMagnitude < 0.001f)
+            fromPlayer = player.forward;
 
+        fromPlayer.Normalize();
+
+        Vector3 tangent =
+            Vector3.Cross(
+                Vector3.up,
+                fromPlayer
+            ) * direction;
+
+        Vector3 radialPosition =
+            player.position +
+            fromPlayer * preferredDistance;
+
+        Vector3 desiredPosition =
+            radialPosition +
+            tangent * circleDistance;
+
+        MoveToCombatPosition(
+            desiredPosition,
+            combatMoveSpeed
+        );
+    }
 
     // ==================================================
+    // COMBAT POSITION
+    // ==================================================
 
+    void MoveToCombatPosition(
+        Vector3 desiredPosition,
+        float moveSpeed)
+    {
+        if (!agent.isOnNavMesh)
+            return;
 
+        Vector3 targetSeparation =
+            GetEnemySeparationOffset();
 
+        smoothedSeparationOffset =
+            Vector3.SmoothDamp(
+                smoothedSeparationOffset,
+                targetSeparation,
+                ref separationSmoothVelocity,
+                separationSmoothTime
+            );
 
+        desiredPosition +=
+            smoothedSeparationOffset;
 
+        Vector3 difference =
+            desiredPosition -
+            agent.transform.position;
 
+        difference.y = 0f;
+
+        if (difference.magnitude <
+            minimumCombatMoveDistance)
+        {
+            HoldPosition();
+
+            return;
+        }
+
+        if (NavMesh.SamplePosition(
+            desiredPosition,
+            out NavMeshHit hit,
+            2f,
+            NavMesh.AllAreas))
+        {
+            agent.speed = moveSpeed;
+
+            agent.isStopped = false;
+
+            // SetDestination requests a new NavMesh path.
+            agent.SetDestination(hit.position);
+
+            UpdateMovementAnimation();
+        }
+        else
+        {
+            HoldPosition();
+        }
+
+        FacePlayer();
+    }
+
+    // ==================================================
+    // SEPARATION
+    // ==================================================
+
+    Vector3 GetEnemySeparationOffset()
+    {
+        if (enemySeparationDistance <= 0f ||
+            enemySeparationStrength <= 0f)
+        {
+            return Vector3.zero;
+        }
+
+        Vector3 myPosition =
+            GetAgentPosition();
+
+        Vector3 separation =
+            Vector3.zero;
+
+        int nearbyCount = 0;
+
+        for (int i = 0;
+             i < allEnemies.Count;
+             i++)
+        {
+            EnemyAI other =
+                allEnemies[i];
+
+            if (other == null ||
+                other == this ||
+                !other.isActiveAndEnabled)
+            {
+                continue;
+            }
+
+            Vector3 otherPosition =
+                other.GetAgentPosition();
+
+            Vector3 away =
+                myPosition -
+                otherPosition;
+
+            away.y = 0f;
+
+            float distance =
+                away.magnitude;
+
+            if (distance <= 0.001f ||
+                distance >=
+                enemySeparationDistance)
+            {
+                continue;
+            }
+
+            float normalizedDistance =
+                distance /
+                enemySeparationDistance;
+
+            // Stronger push when extremely close.
+            float strength =
+                1f -
+                normalizedDistance;
+
+            strength *= strength;
+
+            separation +=
+                away.normalized *
+                strength;
+
+            nearbyCount++;
+        }
+
+        if (nearbyCount == 0)
+            return Vector3.zero;
+
+        separation /= nearbyCount;
+
+        return separation *
+               enemySeparationStrength;
+    }
+
+    // ==================================================
+    // EMERGENCY SEPARATION
+    // ==================================================
+
+    bool IsTooCloseToAnotherEnemy()
+    {
+        Vector3 myPosition =
+            GetAgentPosition();
+
+        float sqrLimit =
+            emergencySeparationDistance *
+            emergencySeparationDistance;
+
+        for (int i = 0;
+             i < allEnemies.Count;
+             i++)
+        {
+            EnemyAI other =
+                allEnemies[i];
+
+            if (other == null ||
+                other == this ||
+                !other.isActiveAndEnabled)
+            {
+                continue;
+            }
+
+            Vector3 difference =
+                myPosition -
+                other.GetAgentPosition();
+
+            difference.y = 0f;
+
+            if (difference.sqrMagnitude <
+                sqrLimit)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void SeparateFromEnemies()
+    {
+        Vector3 separation =
+            GetEnemySeparationOffset();
+
+        if (separation.sqrMagnitude <
+            0.001f)
+        {
+            HoldPosition();
+
+            return;
+        }
+
+        Vector3 desiredPosition =
+            GetAgentPosition() +
+            separation;
+
+        MoveToCombatPosition(
+            desiredPosition,
+            combatMoveSpeed
+        );
+    }
+
+    // ==================================================
+    // HOLD
+    // ==================================================
+
+    void HoldPosition()
+    {
+        if (agent != null &&
+            agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
+
+        SetMovementAnimation(0f);
+
+        FacePlayer();
+    }
+
+    // ==================================================
+    // CHASE
+    // ==================================================
 
     void ChasePlayer()
-
-
-
     {
-
-
-
         if (!agent.isOnNavMesh)
-
-
-
-        {
-
-
-
             return;
-
-
-
-        }
-
-
-
-
-
-
 
         agent.updateRotation = true;
 
-
-
         agent.speed = originalSpeed;
-
-
 
         agent.isStopped = false;
 
-
-
-
-
-
-
         agent.SetDestination(
-
-
-
             player.position
-
-
-
         );
-
-
-
-
-
-
 
         RestoreVisualRotation();
 
-
-
-
-
-
-
-        animator.SetFloat(
-
-
-
-            "Speed",
-
-
-
-            agent.velocity.magnitude,
-
-
-
-            0.1f,
-
-
-
-            Time.deltaTime
-
-
-
-        );
-
-
-
+        UpdateMovementAnimation();
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
-    // STOP MOVEMENT
-
-
-
+    // STOP
     // ==================================================
-
-
-
-
-
-
 
     void StopMoving()
-
-
-
     {
-
-
-
         if (agent != null &&
-
-
-
             agent.isOnNavMesh)
-
-
-
         {
-
-
-
             agent.isStopped = true;
-
-
-
             agent.ResetPath();
-
-
-
         }
 
-
-
-
-
-
-
-        if (animator != null)
-
-
-
-        {
-
-
-
-            animator.SetFloat(
-
-
-
-                "Speed",
-
-
-
-                0f,
-
-
-
-                0.1f,
-
-
-
-                Time.deltaTime
-
-
-
-            );
-
-
-
-        }
-
-
-
+        SetMovementAnimation(0f);
     }
 
-
-
-
-
-
-
-
-
-
-
+    // ==================================================
+    // MOVEMENT ANIMATION
     // ==================================================
 
-
-
-    // ATTACK
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    void TryAttack()
-
-
-
+    void UpdateMovementAnimation()
     {
-
-
-
-        if (playerHealth != null &&
-
-
-
-            playerHealth.IsDead)
-
-
-
+        if (animator == null ||
+            agent == null)
         {
-
-
-
             return;
-
-
-
         }
 
+        animator.SetFloat(
+            "Speed",
+            agent.velocity.magnitude,
+            0.1f,
+            Time.deltaTime
+        );
+    }
 
+    void SetMovementAnimation(float value)
+    {
+        if (animator == null)
+            return;
 
+        animator.SetFloat(
+            "Speed",
+            value,
+            0.1f,
+            Time.deltaTime
+        );
+    }
 
+    // ==================================================
+    // FACE PLAYER
+    // ==================================================
 
+    void FacePlayer()
+    {
+        if (visualModel == null ||
+            player == null)
+        {
+            return;
+        }
 
+        Vector3 direction =
+            player.position -
+            visualModel.position;
 
-        // =========================================
-        // ONLY THE CLOSEST ENEMY CAN ATTACK
-        // =========================================
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion rotation =
+            Quaternion.LookRotation(
+                direction.normalized,
+                Vector3.up
+            );
+
+        rotation *=
+            Quaternion.Euler(
+                0f,
+                facingOffset,
+                0f
+            );
+
+        visualModel.rotation = rotation;
+    }
+
+    void RestoreVisualRotation()
+    {
+        if (visualModel != null)
+        {
+            visualModel.localRotation =
+                originalVisualLocalRotation;
+        }
+    }
+
+    // ==================================================
+    // LOCK ON
+    // ==================================================
+
+    bool IsPlayerLockedOntoMe()
+    {
+        if (playerLockOn == null ||
+            !playerLockOn.IsLockedOn)
+        {
+            return false;
+        }
+
+        Transform target =
+            playerLockOn.CurrentTarget;
+
+        if (target == null)
+            return false;
+
+        EnemyHealth myHealth =
+            GetComponent<EnemyHealth>();
+
+        if (myHealth == null)
+        {
+            myHealth =
+                GetComponentInParent
+                <EnemyHealth>();
+        }
+
+        EnemyHealth targetHealth =
+            target.GetComponent<EnemyHealth>();
+
+        if (targetHealth == null)
+        {
+            targetHealth =
+                target.GetComponentInParent
+                <EnemyHealth>();
+        }
+
+        return myHealth != null &&
+               targetHealth != null &&
+               myHealth == targetHealth;
+    }
+
+    // ==================================================
+    // ATTACK
+    // ==================================================
+
+    void TryAttack()
+    {
+        if (!IsReadyForAttackTurn())
+            return;
 
         if (!EnemyAttackCoordinator.TryClaimAttack(
             this,
@@ -3915,1136 +1142,674 @@ private Coroutine knockbackCoroutine;
             return;
         }
 
-
-
-
-
-
-
-        if (Time.time <
-
-
-
-            nextAttackTime)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
         StopMoving();
-
-
-
         FacePlayer();
 
-
-
-
-
-
-
         if (enemyBlock != null)
-
-
-
-        {
-
-
-
             enemyBlock.StopBlocking();
 
-
-
-        }
-
-
-
-
-
-
-
         animator.SetBool(
-
-
-
             "Blocking",
-
-
-
             false
-
-
-
         );
-
-
-
-
-
-
 
         animator.ResetTrigger(
-
-
-
             "Attack"
-
-
-
         );
-
-
-
-
-
-
 
         IsAttacking = true;
 
-
-
-
-
-
-
         animator.SetTrigger(
-
-
-
             "Attack"
-
-
-
         );
 
-
-
-
-
-
-
         nextAttackTime =
-
-
-
             Time.time +
-
-
-
             attackCooldown;
 
-
-
-
-
-
-
         nextBlockCheckTime =
-
-
-
             Time.time +
-
-
-
             blockCheckDelay;
 
-
-
-
-
-
-
         nextCombatDecisionTime =
-
-
-
             Time.time + 0.5f;
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
+    // ==================================================
+    // END ATTACK
+    // Animation Event
     // ==================================================
 
+    public void EndAttack()
+    {
+        if (!IsAttacking)
+            return;
 
+        IsAttacking = false;
 
+        EnemyAttackCoordinator.ReleaseAttack(
+            this,
+            attackHandoffDelay
+        );
+
+        // Retreat only sometimes.
+        if (Random.value <=
+            afterAttackRetreatChance)
+        {
+            StartAfterAttackRetreat();
+        }
+        else
+        {
+            nextCombatDecisionTime = 0f;
+        }
+    }
+
+    // ==================================================
+    // AFTER ATTACK RETREAT
+    // ==================================================
+
+    void StartAfterAttackRetreat()
+    {
+        if (afterAttackRetreatCoroutine != null)
+        {
+            StopCoroutine(
+                afterAttackRetreatCoroutine
+            );
+        }
+
+        afterAttackRetreatCoroutine =
+            StartCoroutine(
+                AfterAttackRetreat()
+            );
+    }
+
+    IEnumerator AfterAttackRetreat()
+    {
+        if (agent == null ||
+            !agent.isOnNavMesh ||
+            player == null)
+        {
+            afterAttackRetreatCoroutine = null;
+
+            yield break;
+        }
+
+        isRetreatingAfterAttack = true;
+
+        Vector3 startPosition =
+            GetAgentPosition();
+
+        Vector3 away =
+            startPosition -
+            player.position;
+
+        away.y = 0f;
+
+        if (away.sqrMagnitude < 0.001f)
+            away = -player.forward;
+
+        away.Normalize();
+
+        Vector3 separation =
+            GetEnemySeparationOffset();
+
+        Vector3 direction = away;
+
+        if (separation.sqrMagnitude > 0.001f)
+        {
+            direction +=
+                separation.normalized *
+                0.75f;
+        }
+
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+            direction = away;
+
+        direction.Normalize();
+
+        Vector3 wantedPosition =
+            startPosition +
+            direction *
+            afterAttackRetreatDistance;
+
+        if (NavMesh.SamplePosition(
+            wantedPosition,
+            out NavMeshHit hit,
+            2f,
+            NavMesh.AllAreas))
+        {
+            agent.speed = retreatSpeed;
+
+            agent.isStopped = false;
+
+            agent.SetDestination(
+                hit.position
+            );
+
+            float timer = 0f;
+
+            while (timer <
+                   afterAttackRetreatDuration)
+            {
+                if (isKnockedBack)
+                {
+                    isRetreatingAfterAttack =
+                        false;
+
+                    afterAttackRetreatCoroutine =
+                        null;
+
+                    yield break;
+                }
+
+                timer += Time.deltaTime;
+
+                FacePlayer();
+
+                UpdateMovementAnimation();
+
+                yield return null;
+            }
+        }
+
+        if (agent != null &&
+            agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
+
+        SetMovementAnimation(0f);
+
+        isRetreatingAfterAttack = false;
+
+        afterAttackRetreatCoroutine = null;
+
+        nextCombatDecisionTime = 0f;
+    }
+
+    // ==================================================
     // BLOCK
-
-
-
     // ==================================================
-
-
-
-
-
-
 
     void TryBlock()
-
-
-
     {
-
-
-
-        if (enemyBlock == null)
-
-
-
+        if (enemyBlock == null ||
+            enemyBlock.IsBlocking ||
+            Time.time < nextBlockCheckTime)
         {
-
-
-
             return;
-
-
-
         }
-
-
-
-
-
-
-
-        if (enemyBlock.IsBlocking)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        if (Time.time <
-
-
-
-            nextBlockCheckTime)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
 
         enemyBlock.TryBlock();
 
-
-
-
-
-
-
         nextBlockCheckTime =
-
-
-
             Time.time +
-
-
-
             blockCheckDelay;
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
-    // ATTACK DISTANCE
-
-
-
+    // DEAL DAMAGE
+    // Animation Event
     // ==================================================
-
-
-
-
-
-
-
-    float GetAttackDistance()
-
-
-
-    {
-
-
-
-        if (attackPoint == null)
-
-
-
-        {
-
-
-
-            return GetFlatDistance(
-
-
-
-                agent.transform.position,
-
-
-
-                player.position
-
-
-
-            );
-
-
-
-        }
-
-
-
-
-
-
-
-        return GetFlatDistance(
-
-
-
-            attackPoint.position,
-
-
-
-            player.position
-
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // FLAT DISTANCE
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    float GetFlatDistance(
-
-
-
-        Vector3 a,
-
-
-
-        Vector3 b)
-
-
-
-    {
-
-
-
-        a.y = 0f;
-
-
-
-        b.y = 0f;
-
-
-
-
-
-
-
-        return Vector3.Distance(
-
-
-
-            a,
-
-
-
-            b
-
-
-
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
-    // ANIMATION EVENT DAMAGE
-
-
-
-    // ==================================================
-
-
-
-
-
-
 
     public void DealAttackDamage()
-
-
-
     {
-
-
+        if (!IsAttacking)
+            return;
 
         if (playerHealth != null &&
-
-
-
             playerHealth.IsDead)
-
-
-
-        {
-
-
-
-            return;
-
-
-
-        }
-
-
-
-
-
-
-
-        // Extra safety:
-        // only the enemy that owns the shared attack turn
-        // can deal damage.
-        if (!EnemyAttackCoordinator.IsActiveAttacker(this))
         {
             return;
         }
 
-
-
-
-
-
+        if (!EnemyAttackCoordinator
+            .IsActiveAttacker(this))
+        {
+            return;
+        }
 
         if (attackPoint == null)
-
-
-
-        {
-
-
-
             return;
 
-
-
-        }
-
-
-
-
-
-
-
         Collider[] hits =
-
-
-
             Physics.OverlapSphere(
-
-
-
                 attackPoint.position,
-
-
-
                 damageRadius,
-
-
-
                 playerLayer
-
-
-
             );
-
-
-
-
-
-
 
         foreach (Collider hit in hits)
-
-
-
         {
-
-
-
             PlayerHealth health =
-
-
-
-                hit.GetComponentInParent<PlayerHealth>();
-
-
-
-
-
-
+                hit.GetComponentInParent
+                <PlayerHealth>();
 
             if (health != null &&
-
-
-
                 !health.IsDead)
-
-
-
             {
-
-
-
                 health.TakeDamage(
-
-
-
                     attackDamage
-
-
-
                 );
 
-
-
-
-
-
-
                 break;
-
-
-
             }
-
-
-
         }
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
     // ==================================================
-
-
-
-    // END ATTACK
-
-
-
-    // ==================================================
-
-
-
-
-
-
-
-    public void EndAttack()
-
-
-
-    {
-
-
-
-        IsAttacking = false;
-
-        EnemyAttackCoordinator.ReleaseAttack(
-            this,
-            attackHandoffDelay
-        );
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    // ==================================================
-
-
-
     // CANCEL ATTACK
-
-
-
     // ==================================================
-
-
-
-
-
-
 
     public void CancelAttack()
-
-
-
     {
-
-
+        bool wasAttacking =
+            IsAttacking;
 
         IsAttacking = false;
 
-        EnemyAttackCoordinator.ReleaseAttack(
-            this,
-            attackHandoffDelay
-        );
-
-
-
-
-
-
-
-        if (animator != null)
-
-
-
+        if (wasAttacking)
         {
-
-
-
-            animator.ResetTrigger(
-
-
-
-                "Attack"
-
-
-
+            EnemyAttackCoordinator.ReleaseAttack(
+                this,
+                attackHandoffDelay
             );
-
-
-
         }
 
-
-
+        if (animator != null)
+            animator.ResetTrigger("Attack");
     }
 
     // ==================================================
-    // ATTACK COORDINATOR HELPERS
+    // COORDINATOR API
     // ==================================================
 
     public bool CanParticipateInAttackSelection()
     {
-        if (player == null || agent == null)
+        if (!isActiveAndEnabled)
             return false;
 
-        if (playerHealth != null && playerHealth.IsDead)
+        if (player == null ||
+            agent == null)
+        {
+            return false;
+        }
+
+        if (!agent.isOnNavMesh)
             return false;
 
-        EnemyHealth myHealth = GetComponent<EnemyHealth>();
-
-        if (myHealth == null)
-            myHealth = GetComponentInParent<EnemyHealth>();
-
-        if (myHealth != null && myHealth.IsDead)
+        if (isKnockedBack ||
+            isRetreatingAfterAttack ||
+            IsAttacking)
+        {
             return false;
+        }
+
+        if (playerHealth != null &&
+            playerHealth.IsDead)
+        {
+            return false;
+        }
+
+        EnemyHealth health =
+            GetComponent<EnemyHealth>();
+
+        if (health == null)
+        {
+            health =
+                GetComponentInParent
+                <EnemyHealth>();
+        }
+
+        if (health != null &&
+            health.IsDead)
+        {
+            return false;
+        }
 
         float distance =
             GetFlatDistance(
-                agent.transform.position,
+                GetAgentPosition(),
                 player.position
             );
 
-        return distance <= detectionRange;
-    }
-// ==================================================
-// KNOCKBACK
-// ==================================================
-
-public void ApplyKnockback(
-    Vector3 attackerPosition,
-    float distance,
-    float duration)
-{
-    if (agent == null)
-        return;
-
-    EnemyHealth myHealth =
-        GetComponent<EnemyHealth>();
-
-    if (myHealth == null)
-    {
-        myHealth =
-            GetComponentInParent<EnemyHealth>();
+        return distance <= combatRange;
     }
 
-    if (myHealth != null &&
-        myHealth.IsDead)
+    public bool IsReadyForAttackTurn()
     {
-        return;
+        if (!CanParticipateInAttackSelection())
+            return false;
+
+        if (Time.time < nextAttackTime)
+            return false;
+
+        return IsInAttackRange();
     }
 
-    if (knockbackCoroutine != null)
+    public bool IsInAttackRange()
     {
-        StopCoroutine(
-            knockbackCoroutine
-        );
+        if (player == null)
+            return false;
+
+        return GetAttackDistance() <=
+               attackRange;
     }
 
-    knockbackCoroutine =
-        StartCoroutine(
-            KnockbackRoutine(
-                attackerPosition,
-                distance,
-                duration
-            )
-        );
-}
-// ==================================================
-// END KNOCKBACK / STAND UP RECOVERY
-// Animation Event at the end of StandingUp.
-// ==================================================
-
-public void EndKnockbackRecovery()
-{
-    if (!isKnockedBack)
-        return;
-
-    // Recovery is finished.
-    isKnockedBack = false;
-
-    if (agent != null &&
-        agent.isOnNavMesh)
+    public float GetSqrDistanceToPlayer()
     {
-        // Clear anything left from knockback.
-        agent.ResetPath();
+        if (player == null)
+            return Mathf.Infinity;
 
-        // Allow NavMesh movement again.
-        agent.isStopped = false;
+        Vector3 difference =
+            GetAgentPosition() -
+            player.position;
 
-        // Make sure the agent can update normally.
-        agent.updatePosition = true;
-        agent.updateRotation = true;
+        difference.y = 0f;
+
+        return difference.sqrMagnitude;
     }
 
-    // Force the combat AI to make a fresh
-    // movement decision immediately.
-    nextCombatDecisionTime = 0f;
-
-// IMPORTANT:
-// Do NOT set isKnockedBack = false here.
-// StandingUp's Animation Event does that.
-knockbackCoroutine = null;
-}
-
-IEnumerator KnockbackRoutine(
-    Vector3 attackerPosition,
-    float distance,
-    float duration)
-{
-    isKnockedBack = true;
-
-    // Cancel any attack currently happening.
-    if (IsAttacking)
+    public Vector3 GetAttackPosition()
     {
-        CancelAttack();
+        if (attackPoint != null)
+            return attackPoint.position;
+
+        return GetAgentPosition();
     }
 
-    // Stop blocking.
-    if (enemyBlock != null)
+    // ==================================================
+    // KNOCKBACK
+    // ==================================================
+
+    public void ApplyKnockback(
+        Vector3 attackerPosition,
+        float distance,
+        float duration)
     {
-        enemyBlock.ForceStopBlock();
-    }
+        if (agent == null)
+            return;
 
-    if (animator != null)
-    {
-        animator.SetBool(
-            "Blocking",
-            false
-        );
+        EnemyHealth health =
+            GetComponent<EnemyHealth>();
 
-        animator.ResetTrigger(
-            "Attack"
-        );
-
-        animator.ResetTrigger(
-            knockbackTrigger
-        );
-
-        animator.SetTrigger(
-            knockbackTrigger
-        );
-    }
-
-    if (!agent.isOnNavMesh)
-    {
-        isKnockedBack = false;
-        knockbackCoroutine = null;
-        yield break;
-    }
-
-    // Stop normal NavMesh movement.
-    agent.isStopped = true;
-    agent.ResetPath();
-
-    Vector3 startPosition =
-        agent.transform.position;
-
-    // Push enemy directly away from player.
-    Vector3 direction =
-        startPosition -
-        attackerPosition;
-
-    direction.y = 0f;
-
-    if (direction.sqrMagnitude < 0.001f)
-    {
-        direction =
-            -agent.transform.forward;
-    }
-
-    direction.Normalize();
-
-    Vector3 wantedEndPosition =
-        startPosition +
-        direction * distance;
-
-    Vector3 endPosition =
-        wantedEndPosition;
-
-    // Try to keep the final position on NavMesh.
-    NavMeshHit hit;
-
-    if (NavMesh.SamplePosition(
-        wantedEndPosition,
-        out hit,
-        2f,
-        NavMesh.AllAreas))
-    {
-        endPosition =
-            hit.position;
-    }
-
-    duration =
-        Mathf.Max(
-            duration,
-            0.01f
-        );
-
-    float elapsed = 0f;
-
-    while (elapsed < duration)
-    {
-        elapsed += Time.deltaTime;
-
-        float t =
-            Mathf.Clamp01(
-                elapsed / duration
-            );
-
-        // Smooth movement instead of
-        // instantly teleporting.
-        float smoothT =
-            t * t * (3f - 2f * t);
-
-        Vector3 nextPosition =
-            Vector3.Lerp(
-                startPosition,
-                endPosition,
-                smoothT
-            );
-
-        // Warp is used because the NavMeshAgent
-        // still owns the enemy's position.
-        if (agent.isOnNavMesh)
-{
-    agent.Warp(
-        nextPosition
-    );
-
-    // IMPORTANT:
-    // Keep the NavMeshAgent stopped while
-    // Knockback -> StandingUp is playing.
-    agent.isStopped = true;
-    agent.ResetPath();
-}
-
+        if (health == null)
+        {
+            health =
+                GetComponentInParent
+                <EnemyHealth>();
         }
 
-// Do NOT set isKnockedBack to false here.
-// The StandingUp animation will release the enemy.
-knockbackCoroutine = null;
-}
+        if (health != null &&
+            health.IsDead)
+        {
+            return;
+        }
+
+        // Knockback always wins over retreat.
+        if (afterAttackRetreatCoroutine != null)
+        {
+            StopCoroutine(
+                afterAttackRetreatCoroutine
+            );
+
+            afterAttackRetreatCoroutine = null;
+            isRetreatingAfterAttack = false;
+        }
+
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(
+                knockbackCoroutine
+            );
+        }
+
+        knockbackCoroutine =
+            StartCoroutine(
+                KnockbackRoutine(
+                    attackerPosition,
+                    distance,
+                    duration
+                )
+            );
+    }
+
+    IEnumerator KnockbackRoutine(
+        Vector3 attackerPosition,
+        float distance,
+        float duration)
+    {
+        isKnockedBack = true;
+
+        if (IsAttacking)
+            CancelAttack();
+
+        if (enemyBlock != null)
+            enemyBlock.ForceStopBlock();
+
+        if (animator != null)
+        {
+            animator.SetBool(
+                "Blocking",
+                false
+            );
+
+            animator.ResetTrigger(
+                "Attack"
+            );
+
+            animator.ResetTrigger(
+                knockbackTrigger
+            );
+
+            animator.SetTrigger(
+                knockbackTrigger
+            );
+        }
+
+        if (!agent.isOnNavMesh)
+        {
+            isKnockedBack = false;
+            knockbackCoroutine = null;
+
+            yield break;
+        }
+
+        agent.isStopped = true;
+        agent.ResetPath();
+
+        Vector3 start =
+            GetAgentPosition();
+
+        Vector3 direction =
+            start -
+            attackerPosition;
+
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            direction =
+                -agent.transform.forward;
+        }
+
+        direction.Normalize();
+
+        Vector3 end =
+            start +
+            direction * distance;
+
+        if (NavMesh.SamplePosition(
+            end,
+            out NavMeshHit hit,
+            2f,
+            NavMesh.AllAreas))
+        {
+            end = hit.position;
+        }
+
+        duration =
+            Mathf.Max(
+                duration,
+                0.01f
+            );
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t =
+                Mathf.Clamp01(
+                    elapsed / duration
+                );
+
+            // SmoothStep
+            t = t * t *
+                (3f - 2f * t);
+
+            Vector3 position =
+                Vector3.Lerp(
+                    start,
+                    end,
+                    t
+                );
+
+            if (agent.isOnNavMesh)
+            {
+                agent.Warp(position);
+
+                agent.isStopped = true;
+                agent.ResetPath();
+            }
+
+            yield return null;
+        }
+
+        // IMPORTANT:
+        // We intentionally remain isKnockedBack here.
+        //
+        // Your StandingUp animation event calls
+        // EndKnockbackRecovery().
+        knockbackCoroutine = null;
+    }
+
+    // ==================================================
+    // STANDING UP EVENT
+    // ==================================================
+
+    public void EndKnockbackRecovery()
+    {
+        if (!isKnockedBack)
+            return;
+
+        isKnockedBack = false;
+
+        if (agent != null &&
+            agent.isOnNavMesh)
+        {
+            agent.ResetPath();
+
+            agent.isStopped = false;
+
+            agent.updatePosition = true;
+            agent.updateRotation = true;
+        }
+
+        nextCombatDecisionTime = 0f;
+
+        knockbackCoroutine = null;
+    }
+
+    // ==================================================
+    // HELPERS
+    // ==================================================
+
+    Vector3 GetAgentPosition()
+    {
+        if (agent != null)
+            return agent.transform.position;
+
+        return transform.position;
+    }
+
+    float GetAttackDistance()
+    {
+        Vector3 from =
+            attackPoint != null
+                ? attackPoint.position
+                : GetAgentPosition();
+
+        return GetFlatDistance(
+            from,
+            player.position
+        );
+    }
+
+    float GetFlatDistance(
+        Vector3 a,
+        Vector3 b)
+    {
+        a.y = 0f;
+        b.y = 0f;
+
+        return Vector3.Distance(
+            a,
+            b
+        );
+    }
 
     // ==================================================
     // GIZMOS
     // ==================================================
 
-
     void OnDrawGizmosSelected()
-
-
-
     {
-
-
-
         Vector3 center =
-
-
-
             agent != null
-
-
-
                 ? agent.transform.position
-
-
-
                 : transform.position;
 
-
-
-
-
-
-
         Gizmos.DrawWireSphere(
-
-
-
             center,
-
-
-
             detectionRange
-
-
-
         );
 
-
-
-
-
-
-
         Gizmos.DrawWireSphere(
-
-
-
             center,
-
-
-
             combatRange
-
-
-
         );
 
-
-
-
-
-
-
         Gizmos.DrawWireSphere(
-
-
-
             center,
-
-
-
             preferredDistance
-
-
-
         );
-
-
-
-
-
-
 
         Gizmos.DrawWireSphere(
-
-
-
             center,
-
-
-
             dangerDistance
-
-
-
         );
 
+        Gizmos.DrawWireSphere(
+            center,
+            enemySeparationDistance
+        );
 
-
-
-
-
+        Gizmos.DrawWireSphere(
+            center,
+            emergencySeparationDistance
+        );
 
         if (attackPoint != null)
-
-
-
         {
-
-
-
             Gizmos.DrawWireSphere(
-
-
-
                 attackPoint.position,
-
-
-
-                attackRange
-
-
-
+                damageRadius
             );
-
-
-
         }
-
-
-
     }
-
-
-
 }

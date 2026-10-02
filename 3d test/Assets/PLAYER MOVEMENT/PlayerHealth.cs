@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     public PlayerBlock playerBlock;
+    public PlayerParry playerParry;
 
     [Header("Health")]
     public float maxHealth = 100f;
@@ -45,41 +46,59 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void Start()
-    {   
+    {
         if (playerBlock == null)
-    playerBlock = GetComponent<PlayerBlock>();
+            playerBlock = GetComponent<PlayerBlock>();
+
+        if (playerParry == null)
+            playerParry = GetComponent<PlayerParry>();
 
         currentHealth = maxHealth;
 
         lastDamageTime = Time.time;
-        nextRegenTime = Time.time + healthRegenDelay;
+        nextRegenTime =
+            Time.time + healthRegenDelay;
 
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
 
         if (playerMovement == null)
-            playerMovement = GetComponent<PlayerMovement>();
+            playerMovement =
+                GetComponent<PlayerMovement>();
 
         if (playerController == null)
-            playerController = GetComponent<PlayerController>();
+            playerController =
+                GetComponent<PlayerController>();
 
         if (playerCombat == null)
-            playerCombat = GetComponent<PlayerCombat>();
+            playerCombat =
+                GetComponent<PlayerCombat>();
 
         if (playerLockOn == null)
-            playerLockOn = GetComponent<PlayerLockOn>();
+            playerLockOn =
+                GetComponent<PlayerLockOn>();
 
         if (playerDodge == null)
-            playerDodge = GetComponent<PlayerDodge>();
+            playerDodge =
+                GetComponent<PlayerDodge>();
 
         if (deathScreen == null)
-            deathScreen = FindFirstObjectByType<DeathScreen>();
+            deathScreen =
+                FindFirstObjectByType<DeathScreen>();
 
         if (animator == null)
-            Debug.LogError("PLAYER HEALTH: Animator is not assigned!");
+        {
+            Debug.LogError(
+                "PLAYER HEALTH: Animator is not assigned!"
+            );
+        }
 
         if (deathScreen == null)
-            Debug.LogError("PLAYER HEALTH: DeathScreen could not be found!");
+        {
+            Debug.LogError(
+                "PLAYER HEALTH: DeathScreen could not be found!"
+            );
+        }
     }
 
     void Update()
@@ -87,29 +106,65 @@ public class PlayerHealth : MonoBehaviour
         RegenerateHealth();
     }
 
+    // ==================================================
+    // DAMAGE
+    // ==================================================
+
     public void TakeDamage(float damage)
-{
-    if (isDead)
-        return;
-
-    if (playerBlock != null && playerBlock.IsBlocking)
     {
-        damage = 2f;
+        if (isDead)
+            return;
 
-        Debug.Log("PLAYER BLOCKED THE ATTACK!");
-    }
+        // ==============================================
+        // PERFECT PARRY
+        // ==============================================
 
-    currentHealth -= damage;
+        // Parry is checked BEFORE blocking and BEFORE
+        // health is removed.
+        if (playerParry != null &&
+            playerParry.TryPerfectParry())
+        {
+            Debug.Log(
+                "PLAYER PERFECTLY PARRIED THE ATTACK!"
+            );
 
-        currentHealth = Mathf.Clamp(
-            currentHealth,
-            0f,
-            maxHealth
-        );
+            // ZERO DAMAGE.
+            return;
+        }
 
-        // Reset health regeneration timer
+        // ==============================================
+        // NORMAL BLOCK
+        // ==============================================
+
+        if (playerBlock != null &&
+            playerBlock.IsBlocking)
+        {
+            damage = 2f;
+
+            Debug.Log(
+                "PLAYER BLOCKED THE ATTACK!"
+            );
+        }
+
+        // ==============================================
+        // APPLY DAMAGE
+        // ==============================================
+
+        currentHealth -= damage;
+
+        currentHealth =
+            Mathf.Clamp(
+                currentHealth,
+                0f,
+                maxHealth
+            );
+
+        // Reset regeneration timer.
         lastDamageTime = Time.time;
-        nextRegenTime = lastDamageTime + healthRegenDelay;
+
+        nextRegenTime =
+            lastDamageTime +
+            healthRegenDelay;
 
         Debug.Log(
             "PLAYER TOOK " +
@@ -122,28 +177,30 @@ public class PlayerHealth : MonoBehaviour
             Die();
     }
 
+    // ==================================================
+    // REGENERATION
+    // ==================================================
+
     void RegenerateHealth()
     {
-        // Dead players cannot regenerate
         if (isDead)
             return;
 
-        // Don't regenerate if already full
         if (currentHealth >= maxHealth)
             return;
 
-        // Wait until regeneration time
         if (Time.time < nextRegenTime)
             return;
 
-        // Heal
-        currentHealth += healthRegenAmount;
+        currentHealth +=
+            healthRegenAmount;
 
-        currentHealth = Mathf.Clamp(
-            currentHealth,
-            0f,
-            maxHealth
-        );
+        currentHealth =
+            Mathf.Clamp(
+                currentHealth,
+                0f,
+                maxHealth
+            );
 
         Debug.Log(
             "PLAYER REGENERATED " +
@@ -152,10 +209,14 @@ public class PlayerHealth : MonoBehaviour
             currentHealth
         );
 
-        // Wait before next regeneration
         nextRegenTime =
-            Time.time + healthRegenInterval;
+            Time.time +
+            healthRegenInterval;
     }
+
+    // ==================================================
+    // DEATH
+    // ==================================================
 
     void Die()
     {
@@ -166,9 +227,11 @@ public class PlayerHealth : MonoBehaviour
 
         Debug.Log("PLAYER DIED");
 
-        // Disable gameplay controls
         if (playerBlock != null)
-        playerBlock.enabled = false;
+            playerBlock.enabled = false;
+
+        if (playerParry != null)
+            playerParry.enabled = false;
 
         if (playerMovement != null)
             playerMovement.enabled = false;
@@ -188,22 +251,47 @@ public class PlayerHealth : MonoBehaviour
         if (playerDodge != null)
             playerDodge.enabled = false;
 
-        // Play death animation
         if (animator != null)
         {
-            animator.SetFloat("WalkSpeed", 0f);
-            animator.SetFloat("RunSpeed", 0f);
+            animator.SetFloat(
+                "WalkSpeed",
+                0f
+            );
+
+            animator.SetFloat(
+                "RunSpeed",
+                0f
+            );
 
             animator.ResetTrigger("Jump");
             animator.ResetTrigger("RunStop");
             animator.ResetTrigger("Attack");
+            animator.ResetTrigger("Parry");
 
-            animator.SetBool("LockedOn", false);
-            animator.SetBool("Dead", true);
+            animator.SetBool(
+                "LockedOn",
+                false
+            );
+
+            animator.SetBool(
+                "Crouching",
+                false
+            );
+
+            animator.SetBool(
+                "Sliding",
+                false
+            );
+
+            animator.SetBool(
+                "Dead",
+                true
+            );
         }
 
-        // Show death UI
         if (deathScreen != null)
+        {
             deathScreen.ShowDeathScreen();
+        }
     }
 }
